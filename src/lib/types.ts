@@ -1,10 +1,11 @@
-export interface BookEvent {
+export interface Book {
   id: string;
   proposer: string;
-  dateEntered: string;
-  eventDate: string;
+  meetingDate: string;
   month: number;
   year: number;
-  bookTitle: string;
+  title: string;
+  author?: string;
   isbn?: string;
+  coverUrl?: string;
 }

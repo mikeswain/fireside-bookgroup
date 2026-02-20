@@ -1,51 +1,64 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import EventForm from "@/components/EventForm";
-import EventList from "@/components/EventList";
-import type { BookEvent } from "@/lib/types";
-import { addEvent, getEvents, getMembers } from "@/lib/events";
+import { statSync } from "fs";
+import { join } from "path";
+import BookList from "@/components/BookList";
+import { getBooks } from "@/lib/books";
 
 export default function Home() {
-  const [events, setEvents] = useState<BookEvent[]>([]);
-  const [members, setMembers] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
+  const now = new Date();
+  const books = getBooks();
+  const lastUpdated = statSync(
+    join(process.cwd(), "data", "books.json"),
+  ).mtime.toLocaleDateString("en-NZ", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
-  useEffect(() => {
-    Promise.all([getEvents(), getMembers()]).then(([e, m]) => {
-      setEvents(e);
-      setMembers(m);
-      setLoading(false);
-    });
-  }, []);
+  const upcoming = books
+    .filter((b) => new Date(b.meetingDate) >= now)
+    .sort(
+      (a, b) =>
+        new Date(a.meetingDate).getTime() - new Date(b.meetingDate).getTime(),
+    )
+    .slice(0, 6);
 
-  const handleAddEvent = async (event: BookEvent) => {
-    await addEvent(event);
-    setEvents(await getEvents());
-  };
-
-  if (loading) {
-    return (
-      <main className="mx-auto max-w-3xl px-4 py-12">
-        <p className="text-stone-400">Loading...</p>
-      </main>
+  const past = books
+    .filter((b) => new Date(b.meetingDate) < now)
+    .sort(
+      (a, b) =>
+        new Date(b.meetingDate).getTime() - new Date(a.meetingDate).getTime(),
     );
-  }
 
   return (
     <main className="mx-auto max-w-3xl px-4 py-12">
-      <h1 className="mb-8 text-3xl font-bold text-stone-800">
-        Puhoi Fireside Bookgroup
-      </h1>
-
-      <section className="mb-12 rounded-lg border border-stone-200 bg-white p-6 shadow-sm">
-        <h2 className="mb-4 text-xl font-bold text-stone-700">
-          Add Event
-        </h2>
-        <EventForm members={members} onSubmit={handleAddEvent} />
-      </section>
-
-      <EventList events={events} />
+      <div className="relative mb-10 overflow-hidden rounded-xl shadow-lg">
+        <img
+          src="/hero.jpg"
+          alt="Bookshelves filled with books"
+          className="h-56 w-full object-cover brightness-90"
+        />
+        <div className="absolute inset-0 flex items-center gap-5 bg-gradient-to-r from-amber-950/70 via-amber-950/40 to-transparent px-8">
+          <img
+            src="/library.jpg"
+            alt="Puhoi Town Library"
+            className="h-28 w-28 shrink-0 rounded-full border-3 border-amber-200/60 object-cover shadow-lg"
+          />
+          <div>
+            <h1 className="text-3xl font-bold text-amber-50 drop-shadow-lg sm:text-4xl">
+              Puhoi Fireside Bookgroup
+            </h1>
+            <p className="mt-1 text-sm text-amber-200/80">
+              Good books, good company, good wine
+            </p>
+          </div>
+        </div>
+        <p className="absolute bottom-2 right-3 text-xs text-amber-200/60">
+          Updated {lastUpdated}
+        </p>
+      </div>
+      <BookList upcoming={upcoming} past={past} />
     </main>
   );
 }
