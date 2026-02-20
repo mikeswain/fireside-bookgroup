@@ -10,6 +10,7 @@ import { createHash } from "crypto";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 import type { Book } from "../src/lib/types";
+import { lookupBook, googleBooksCover, bookhubCover } from "../src/lib/covers";
 
 const SHEET_ID =
   "2PACX-1vRzRmosulYnO-_E9gxHE8uRFcjPeCDYxFhxdytxuJ3s_vNaMWZuqY5x2ozpv-ZRDOE36i4kXeD5O2do";
@@ -86,114 +87,7 @@ function stableId(year: number, month: number, title: string): string {
   return createHash("sha256").update(key).digest("hex").slice(0, 12);
 }
 
-const MIN_COVER_BYTES = 1000;
-
-/** Check a cover URL is a real image (not a tiny placeholder). */
-async function isValidCover(url: string): Promise<boolean> {
-  try {
-    const res = await fetch(url, { redirect: "follow" });
-    if (!res.ok) return false;
-    // Check content-length header first
-    const cl = Number(res.headers.get("content-length") || "0");
-    if (cl > MIN_COVER_BYTES) return true;
-    // No content-length — read the body and check size
-    const buf = await res.arrayBuffer();
-    return buf.byteLength > MIN_COVER_BYTES;
-  } catch {
-    return false;
-  }
-}
-
-interface OpenLibraryResult {
-  coverUrl?: string;
-  isbn?: string;
-}
-
-/** Look up a book on Open Library. Returns cover URL and ISBN when available. */
-async function lookupBook(
-  title: string,
-  author?: string,
-  knownIsbn?: string,
-): Promise<OpenLibraryResult> {
-  // If we already have an ISBN, try direct cover lookup (validate size)
-  if (knownIsbn) {
-    const cleaned = knownIsbn.replace(/[-\s]/g, "");
-    const url = `https://covers.openlibrary.org/b/isbn/${cleaned}-M.jpg`;
-    if (await isValidCover(url)) {
-      return { coverUrl: url, isbn: knownIsbn };
-    }
-  }
-
-  // Search by title+author to find cover and/or ISBN
-  const params = new URLSearchParams({
-    title,
-    limit: "1",
-    fields: "cover_i,isbn",
-  });
-  if (author) params.set("author", author);
-  const url = `https://openlibrary.org/search.json?${params}`;
-
-  try {
-    const res = await fetch(url);
-    if (!res.ok) return {};
-    const data = (await res.json()) as {
-      docs: Array<{ cover_i?: number; isbn?: string[] }>;
-    };
-    const doc = data.docs[0];
-    if (!doc) return {};
-
-    const result: OpenLibraryResult = {};
-
-    // Grab ISBN (prefer ISBN-13 which starts with 978/979)
-    const isbn13 = doc.isbn?.find((i) => i.length === 13);
-    result.isbn = knownIsbn || isbn13 || doc.isbn?.[0];
-
-    // Grab cover — cover_i is reliable; ISBN covers need size validation
-    if (doc.cover_i) {
-      result.coverUrl = `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg`;
-    } else if (doc.isbn?.[0]) {
-      const url = `https://covers.openlibrary.org/b/isbn/${doc.isbn[0]}-M.jpg`;
-      if (await isValidCover(url)) result.coverUrl = url;
-    }
-
-    return result;
-  } catch {
-    // Non-fatal
-  }
-  return {};
-}
-
-/** Fallback: try Google Books API for a cover image. */
-async function googleBooksCover(
-  title: string,
-  author?: string,
-): Promise<string | undefined> {
-  const q = author ? `intitle:${title}+inauthor:${author}` : title;
-  const url = `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(q)}&maxResults=1`;
-
-  try {
-    const res = await fetch(url);
-    if (!res.ok) return undefined;
-    const data = (await res.json()) as {
-      items?: Array<{
-        volumeInfo?: { imageLinks?: { thumbnail?: string } };
-      }>;
-    };
-    const thumbnail = data.items?.[0]?.volumeInfo?.imageLinks?.thumbnail;
-    // Google returns http URLs and small images; upgrade to https and larger size
-    const coverUrl = thumbnail
-      ?.replace("http://", "https://")
-      .replace("zoom=1", "zoom=2");
-    if (coverUrl && (await isValidCover(coverUrl))) return coverUrl;
-    return undefined;
-  } catch {
-    // Non-fatal
-  }
-  return undefined;
-}
-
-const DELAY_MS = 100; // be polite to APIs
-const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+const BATCH_SIZE = 10; // concurrent requests per batch
 
 async function main() {
   console.log("Fetching sheet...");
@@ -217,60 +111,96 @@ async function main() {
     const monthNum = MONTH_NAMES[monthStr?.toLowerCase()] ?? 0;
     const meetingDate = parseMeetingDate(dateStr ?? "");
 
-    // Skip rows we can't parse a date for (the "Unknown" entries at the bottom)
-    if (!meetingDate) continue;
-
-    books.push({
-      id: stableId(year, monthNum, title),
+    const book: Book = {
+      id: stableId(year || 0, monthNum, title),
       proposer: proposer ?? "",
-      meetingDate: meetingDate.toISOString(),
-      month: monthNum,
-      year,
       title,
       author: author || undefined,
       isbn: isbn || undefined,
-    });
+    };
+
+    if (meetingDate) {
+      book.meetingDate = meetingDate.toISOString();
+      book.month = monthNum;
+      book.year = year;
+    }
+
+    books.push(book);
   }
 
-  books.sort(
-    (a, b) =>
-      new Date(a.meetingDate).getTime() - new Date(b.meetingDate).getTime(),
-  );
+  // Dated books first (sorted by date), then undated at the end
+  books.sort((a, b) => {
+    if (!a.meetingDate && !b.meetingDate) return 0;
+    if (!a.meetingDate) return 1;
+    if (!b.meetingDate) return -1;
+    return new Date(a.meetingDate).getTime() - new Date(b.meetingDate).getTime();
+  });
 
-  // Look up covers and ISBNs from Open Library
-  console.log(`Looking up covers and ISBNs for ${books.length} books...`);
+  // Look up covers and ISBNs from Open Library (in batches)
+  console.log(`Looking up covers and ISBNs for ${books.length} books (${BATCH_SIZE} at a time)...`);
   let covers = 0;
   let isbns = 0;
-  for (const book of books) {
-    const result = await lookupBook(book.title, book.author, book.isbn);
-    if (result.coverUrl) {
-      book.coverUrl = result.coverUrl;
-      covers++;
+  for (let i = 0; i < books.length; i += BATCH_SIZE) {
+    const batch = books.slice(i, i + BATCH_SIZE);
+    const results = await Promise.all(
+      batch.map((book) => lookupBook(book.title, book.author, book.isbn)),
+    );
+    for (let j = 0; j < batch.length; j++) {
+      const result = results[j];
+      if (result.coverUrl) {
+        batch[j].coverUrl = result.coverUrl;
+        covers++;
+      }
+      if (result.isbn && !batch[j].isbn) {
+        batch[j].isbn = result.isbn;
+        isbns++;
+      }
     }
-    if (result.isbn && !book.isbn) {
-      book.isbn = result.isbn;
-      isbns++;
-    }
-    process.stdout.write(`\r  ${covers} covers, ${isbns} ISBNs found...`);
-    await wait(DELAY_MS);
+    process.stdout.write(`\r  ${i + batch.length}/${books.length} — ${covers} covers, ${isbns} ISBNs`);
   }
   console.log(`\n  ${covers}/${books.length} covers, ${isbns} new ISBNs found.`);
 
-  // Fallback: try Google Books for any still missing a cover
+  // Fallback: try Google Books for any still missing a cover (in batches)
   const missing = books.filter((b) => !b.coverUrl);
   if (missing.length > 0) {
-    console.log(`Trying Google Books for ${missing.length} missing covers...`);
+    console.log(`Trying Google Books for ${missing.length} missing covers (${BATCH_SIZE} at a time)...`);
     let gCovers = 0;
-    for (const book of missing) {
-      const coverUrl = await googleBooksCover(book.title, book.author);
-      if (coverUrl) {
-        book.coverUrl = coverUrl;
-        gCovers++;
+    for (let i = 0; i < missing.length; i += BATCH_SIZE) {
+      const batch = missing.slice(i, i + BATCH_SIZE);
+      const results = await Promise.all(
+        batch.map((book) => googleBooksCover(book.title, book.author)),
+      );
+      for (let j = 0; j < batch.length; j++) {
+        if (results[j]) {
+          batch[j].coverUrl = results[j];
+          gCovers++;
+        }
       }
-      await wait(DELAY_MS);
     }
     console.log(`  ${gCovers} additional covers from Google Books.`);
     covers += gCovers;
+    console.log(`  Total: ${covers}/${books.length} covers.`);
+  }
+
+  // Fallback: try BookHub NZ for any still missing a cover (in batches)
+  const missingNz = books.filter((b) => !b.coverUrl);
+  if (missingNz.length > 0) {
+    console.log(`Trying BookHub NZ for ${missingNz.length} missing covers (${BATCH_SIZE} at a time)...`);
+    let bhCovers = 0;
+    for (let i = 0; i < missingNz.length; i += BATCH_SIZE) {
+      const batch = missingNz.slice(i, i + BATCH_SIZE);
+      const results = await Promise.all(
+        batch.map((book) => bookhubCover(book.title, book.author)),
+      );
+      for (let j = 0; j < batch.length; j++) {
+        if (results[j]) {
+          batch[j].coverUrl = results[j];
+          bhCovers++;
+        }
+      }
+    }
+    console.log(`  ${bhCovers} additional covers from BookHub NZ.`);
+    covers += bhCovers;
     console.log(`  Total: ${covers}/${books.length} covers.`);
   }
 

@@ -16,23 +16,26 @@ export default function Home() {
     minute: "2-digit",
   });
 
-  const upcoming = books
-    .filter((b) => new Date(b.meetingDate) >= now)
+  const dated = books.filter((b) => b.meetingDate);
+  const undated = books.filter((b) => !b.meetingDate);
+
+  const upcoming = dated
+    .filter((b) => new Date(b.meetingDate!) >= now)
     .sort(
       (a, b) =>
-        new Date(a.meetingDate).getTime() - new Date(b.meetingDate).getTime(),
+        new Date(a.meetingDate!).getTime() - new Date(b.meetingDate!).getTime(),
     )
     .slice(0, 6);
 
-  const past = books
-    .filter((b) => new Date(b.meetingDate) < now)
+  const past = dated
+    .filter((b) => new Date(b.meetingDate!) < now)
     .sort(
       (a, b) =>
-        new Date(b.meetingDate).getTime() - new Date(a.meetingDate).getTime(),
+        new Date(b.meetingDate!).getTime() - new Date(a.meetingDate!).getTime(),
     );
 
   return (
-    <main className="mx-auto max-w-3xl px-4 py-12">
+    <main className="mx-auto max-w-5xl px-4 py-12">
       <div className="relative mb-10 overflow-hidden rounded-xl shadow-lg">
         <img
           src="/hero.jpg"
@@ -54,6 +57,12 @@ export default function Home() {
             </p>
           </div>
         </div>
+        <a
+          href="/admin"
+          className="absolute top-3 right-3 rounded-md bg-amber-900/40 px-3 py-1 text-xs font-medium text-amber-200/80 backdrop-blur-sm hover:bg-amber-900/60 hover:text-amber-100"
+        >
+          Admin
+        </a>
         <p className="absolute bottom-2 right-3 text-xs text-amber-200/60">
           Updated {lastUpdated}
         </p>
@@ -93,7 +102,7 @@ export default function Home() {
         </div>
       </section>
 
-      <BookList upcoming={upcoming} past={past} />
+      <BookList upcoming={upcoming} past={past} undated={undated} />
     </main>
   );
 }
