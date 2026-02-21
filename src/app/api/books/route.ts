@@ -3,6 +3,7 @@ import { fetchBooks, commitBooks } from "@/lib/github";
 import { findCover } from "@/lib/covers";
 import type { Book } from "@/lib/types";
 
+export const runtime = 'edge';
 function getToken(): string {
   const token = process.env.GITHUB_TOKEN;
   if (!token) throw new Error("GITHUB_TOKEN not configured");
@@ -180,7 +181,7 @@ export async function PUT(request: NextRequest) {
 // --- DELETE: remove a book ---
 export async function DELETE(request: NextRequest) {
   try {
-    const body = (await request.json()) as { id: string; sha: string };
+    const body = (await request.json()) as { id: string; sha: string; };
 
     if (!body.id) {
       return NextResponse.json({ error: "ID is required" }, { status: 400 });
