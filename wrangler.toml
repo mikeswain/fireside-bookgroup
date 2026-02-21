@@ -4,3 +4,4 @@ compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".vercel/output/static"
 [vars]
 GITHUB_REPO = "mikeswain/fireside-bookgroup"
+GITHUB_BRANCH = "master"
