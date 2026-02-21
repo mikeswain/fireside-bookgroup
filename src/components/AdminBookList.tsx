@@ -11,7 +11,7 @@ export default function AdminBookList() {
   const [sha, setSha] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [editingBook, setEditingBook] = useState<Book | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
   const [sortField, setSortField] = useState<SortField>("date");
   const [sortAsc, setSortAsc] = useState(false);
@@ -52,18 +52,17 @@ export default function AdminBookList() {
     await fetchAllBooks();
   };
 
-  const handleUpdate = async (data: BookFormData) => {
-    if (!editingBook) return;
+  const handleUpdate = async (book: Book, data: BookFormData) => {
     const res = await fetch("/api/books", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: editingBook.id, ...data, sha }),
+      body: JSON.stringify({ id: book.id, ...data, sha }),
     });
     if (!res.ok) {
       const err = await res.json();
       throw new Error(err.error ?? "Failed to update book");
     }
-    setEditingBook(null);
+    setEditingId(null);
     await fetchAllBooks();
   };
 
@@ -170,21 +169,10 @@ export default function AdminBookList() {
           <h2 className="mb-4 text-lg font-bold text-amber-900">Add Book</h2>
           <BookForm onSave={handleAdd} onCancel={() => setAdding(false)} />
         </div>
-      ) : editingBook ? (
-        <div className="rounded-xl border border-amber-300 bg-amber-50/80 p-5">
-          <h2 className="mb-4 text-lg font-bold text-amber-900">
-            Edit: {editingBook.title}
-          </h2>
-          <BookForm
-            book={editingBook}
-            onSave={handleUpdate}
-            onCancel={() => setEditingBook(null)}
-          />
-        </div>
       ) : (
         <div className="flex items-center gap-4">
           <button
-            onClick={() => setAdding(true)}
+            onClick={() => { setEditingId(null); setAdding(true); }}
             className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700"
           >
             + Add Book
@@ -216,59 +204,90 @@ export default function AdminBookList() {
           </thead>
           <tbody className="divide-y divide-amber-100">
             {sortedBooks.map((book) => (
-              <tr key={book.id} className="hover:bg-amber-50/50">
-                <td className="px-3 py-2 text-sm">
-                  <div className="flex items-center gap-2">
-                    {book.coverUrl && (
-                      <img
-                        src={book.coverUrl}
-                        alt=""
-                        className="h-8 w-6 shrink-0 rounded object-cover"
-                      />
-                    )}
-                    <span className="font-medium text-amber-900">{book.title}</span>
-                  </div>
-                </td>
-                <td className="px-3 py-2 text-sm text-amber-700">
-                  {book.author ?? "—"}
-                </td>
-                <td className="px-3 py-2 text-sm text-amber-700">
-                  {book.proposer || "—"}
-                </td>
-                <td className="px-3 py-2 text-sm text-amber-700">
-                  {book.meetingDate
-                    ? new Date(book.meetingDate).toLocaleDateString("en-NZ", {
-                        month: "short",
-                        year: "numeric",
-                      })
-                    : "—"}
-                </td>
-                <td className="px-3 py-2 text-sm">
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => {
-                        setAdding(false);
-                        setEditingBook(book);
-                      }}
-                      className="text-amber-700 hover:text-amber-900"
-                      disabled={deletingId === book.id}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => handleDelete(book)}
-                      className="text-red-600 hover:text-red-800"
-                      disabled={deletingId === book.id}
-                    >
-                      {deletingId === book.id ? "..." : "Delete"}
-                    </button>
-                  </div>
-                </td>
-              </tr>
+              <BookRow
+                key={book.id}
+                book={book}
+                isEditing={editingId === book.id}
+                isDeleting={deletingId === book.id}
+                onEdit={() => { setAdding(false); setEditingId(book.id); }}
+                onCancelEdit={() => setEditingId(null)}
+                onSave={(data) => handleUpdate(book, data)}
+                onDelete={() => handleDelete(book)}
+              />
             ))}
           </tbody>
         </table>
       </div>
     </div>
+  );
+}
+
+interface BookRowProps {
+  book: Book;
+  isEditing: boolean;
+  isDeleting: boolean;
+  onEdit: () => void;
+  onCancelEdit: () => void;
+  onSave: (data: BookFormData) => Promise<void>;
+  onDelete: () => void;
+}
+
+function BookRow({ book, isEditing, isDeleting, onEdit, onCancelEdit, onSave, onDelete }: BookRowProps) {
+  return (
+    <>
+      <tr className={isEditing ? "bg-amber-50" : "hover:bg-amber-50/50"}>
+        <td className="px-3 py-2 text-sm">
+          <div className="flex items-center gap-2">
+            {book.coverUrl && (
+              <img
+                src={book.coverUrl}
+                alt=""
+                className="h-8 w-6 shrink-0 rounded object-cover"
+              />
+            )}
+            <span className="font-medium text-amber-900">{book.title}</span>
+          </div>
+        </td>
+        <td className="px-3 py-2 text-sm text-amber-700">
+          {book.author ?? "\u2014"}
+        </td>
+        <td className="px-3 py-2 text-sm text-amber-700">
+          {book.proposer || "\u2014"}
+        </td>
+        <td className="px-3 py-2 text-sm text-amber-700">
+          {book.meetingDate
+            ? new Date(book.meetingDate).toLocaleDateString("en-NZ", {
+                month: "short",
+                year: "numeric",
+              })
+            : "\u2014"}
+        </td>
+        <td className="px-3 py-2 text-sm">
+          <div className="flex gap-2">
+            <button
+              onClick={isEditing ? onCancelEdit : onEdit}
+              className="text-amber-700 hover:text-amber-900"
+              disabled={isDeleting}
+            >
+              {isEditing ? "Cancel" : "Edit"}
+            </button>
+            <button
+              onClick={onDelete}
+              className="text-red-600 hover:text-red-800"
+              disabled={isDeleting}
+            >
+              {isDeleting ? "..." : "Delete"}
+            </button>
+          </div>
+        </td>
+      </tr>
+      {isEditing && (
+        <tr>
+          <td colSpan={5} className="border-t border-amber-200/40 bg-amber-50/80 px-4 py-4">
+            <BookForm book={book} onSave={onSave} onCancel={onCancelEdit} />
+          </td>
+        </tr>
+      )}
+    </>
   );
 }
