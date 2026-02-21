@@ -49,7 +49,7 @@ export default function Home() {
             className="h-28 w-28 shrink-0 rounded-full border-3 border-amber-200/60 object-cover shadow-lg"
           />
           <div>
-            <h1 className="text-3xl font-bold text-amber-50 drop-shadow-lg sm:text-4xl">
+            <h1 className="text-3xl font-bold text-amber-50 drop-shadow-lg max-sm:text-sm">
               Puhoi Fireside Bookgroup
             </h1>
             <p className="mt-1 text-sm text-amber-200/80">
