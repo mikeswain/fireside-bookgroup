@@ -791,8 +791,19 @@
     "year": 2026
   },
   {
+    "id": "13c2a61e9486",
+    "title": "Brave New World",
+    "author": "Aldous Huxley",
+    "proposer": "Mike",
+    "isbn": "9781548880170",
+    "coverUrl": "https://covers.openlibrary.org/b/id/8231823-M.jpg",
+    "meetingDate": "2026-05-19T07:00:00.000Z",
+    "month": 5,
+    "year": 2026
+  },
+  {
     "id": "193e9c54679e",
-    "proposer": "Mike S",
+    "proposer": "Jenny",
     "title": "Hamnet",
     "author": "Maggie O'Farrell",
     "isbn": "9781432892494",
