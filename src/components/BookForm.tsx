@@ -1,14 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import type { Book } from "@/lib/types";
-
-const MEMBERS = [
-  "Annie", "Bryan", "Cat", "Chris", "Derek", "Diane",
-  "Jackie", "Jenny", "Joe", "Kate", "Kathryn",
-  "Michael F", "Mike", "Mike B", "Mike S",
-  "Sandra", "Steve", "Val",
-];
+import type { Book, Member } from "@/lib/types";
+import { displayName } from "@/lib/types";
 
 const MONTHS = [
   "January", "February", "March", "April", "May", "June",
@@ -17,6 +11,7 @@ const MONTHS = [
 
 interface BookFormProps {
   book?: Book;
+  members?: Member[];
   onSave: (data: BookFormData) => Promise<void>;
   onCancel: () => void;
 }
@@ -28,9 +23,18 @@ export interface BookFormData {
   month: number;
   year: number;
   isbn: string;
+  customDate?: string; // ISO date string override, or empty to use third Tuesday
 }
 
-export default function BookForm({ book, onSave, onCancel }: BookFormProps) {
+/** Format an ISO date string as a local NZ datetime-local input value. */
+function toDatetimeLocal(iso: string): string {
+  const d = new Date(iso);
+  const nz = new Date(d.toLocaleString("en-US", { timeZone: "Pacific/Auckland" }));
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${nz.getFullYear()}-${pad(nz.getMonth() + 1)}-${pad(nz.getDate())}T${pad(nz.getHours())}:${pad(nz.getMinutes())}`;
+}
+
+export default function BookForm({ book, members = [], onSave, onCancel }: BookFormProps) {
   const currentYear = new Date().getFullYear();
 
   const [title, setTitle] = useState(book?.title ?? "");
@@ -39,6 +43,10 @@ export default function BookForm({ book, onSave, onCancel }: BookFormProps) {
   const [month, setMonth] = useState(book?.month ?? 0);
   const [year, setYear] = useState(book?.year ?? currentYear);
   const [isbn, setIsbn] = useState(book?.isbn ?? "");
+  const [useCustomDate, setUseCustomDate] = useState(false);
+  const [customDate, setCustomDate] = useState(
+    book?.meetingDate ? toDatetimeLocal(book.meetingDate) : "",
+  );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
@@ -51,7 +59,10 @@ export default function BookForm({ book, onSave, onCancel }: BookFormProps) {
     setSaving(true);
     setError("");
     try {
-      await onSave({ title, author, proposer, month, year, isbn });
+      await onSave({
+        title, author, proposer, month, year, isbn,
+        customDate: useCustomDate && customDate ? customDate : undefined,
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Save failed");
       setSaving(false);
@@ -97,9 +108,10 @@ export default function BookForm({ book, onSave, onCancel }: BookFormProps) {
           disabled={saving}
         >
           <option value="">— select —</option>
-          {MEMBERS.map((m) => (
-            <option key={m} value={m}>{m}</option>
-          ))}
+          {members.map((m) => {
+            const name = displayName(m);
+            return <option key={name} value={name}>{name}</option>;
+          })}
         </select>
       </div>
 
@@ -132,11 +144,33 @@ export default function BookForm({ book, onSave, onCancel }: BookFormProps) {
         </div>
       </div>
 
-      {month > 0 && year > 0 && (
+      {month > 0 && year > 0 && !useCustomDate && (
         <p className="text-xs text-amber-600">
           Meeting date: third Tuesday of {MONTHS[month - 1]} {year}
         </p>
       )}
+
+      <div>
+        <label className="flex items-center gap-2 text-sm text-amber-800">
+          <input
+            type="checkbox"
+            checked={useCustomDate}
+            onChange={(e) => setUseCustomDate(e.target.checked)}
+            disabled={saving}
+            className="rounded border-amber-300"
+          />
+          Custom date/time
+        </label>
+        {useCustomDate && (
+          <input
+            type="datetime-local"
+            value={customDate}
+            onChange={(e) => setCustomDate(e.target.value)}
+            className={`${inputClass} mt-2`}
+            disabled={saving}
+          />
+        )}
+      </div>
 
       <div>
         <label className={labelClass}>ISBN</label>

@@ -2,6 +2,7 @@ import { statSync } from "fs";
 import { join } from "path";
 import BookList from "@/components/BookList";
 import { getBooks } from "@/lib/books";
+import { NextResponse } from "next/server";
 
 export default function Home() {
   const now = new Date();
@@ -101,7 +102,7 @@ export default function Home() {
           </p>
         </div>
       </section>
-
+      <a href="webcal:/events" >Add to your calendar</a>
       <BookList upcoming={upcoming} past={past} undated={undated} />
     </main>
   );

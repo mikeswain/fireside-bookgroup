@@ -1,4 +1,5 @@
 import AdminBookList from "@/components/AdminBookList";
+import MemberList from "@/components/MemberList";
 
 export const runtime = "edge";
 
@@ -30,6 +31,14 @@ export default function AdminPage() {
         </div>
       </div>
       <AdminBookList />
+
+      <div className="mt-12">
+        <h2 className="mb-4 text-2xl font-bold text-amber-900">Members</h2>
+        <p className="mb-4 text-sm text-amber-600">
+          Manage book group members. Changes commit to GitHub and trigger a rebuild.
+        </p>
+        <MemberList />
+      </div>
     </main>
   );
 }

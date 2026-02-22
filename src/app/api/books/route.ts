@@ -10,29 +10,54 @@ function getToken(): string {
   return token;
 }
 
+const MEETING_HOUR = 19; // 7pm NZ time
+const MEETING_MINUTE = 30;
+
 function generateId(): string {
   const bytes = crypto.getRandomValues(new Uint8Array(6));
   return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-/** Calculate the third Tuesday of a given month/year, at 19:00 NZST. */
+/** Calculate the third Tuesday of a given month/year, at MEETING_HOUR:MEETING_MINUTE Pacific/Auckland. */
 function thirdTuesday(year: number, month: number): string {
-  // Find the first day of the month
   const first = new Date(Date.UTC(year, month - 1, 1));
-  // Day of week: 0=Sun, 1=Mon, 2=Tue
   const dayOfWeek = first.getUTCDay();
-  // Days until first Tuesday
   const daysToTue = (2 - dayOfWeek + 7) % 7;
-  // Third Tuesday = first Tuesday + 14 days
-  const thirdTue = 1 + daysToTue + 14;
+  const day = 1 + daysToTue + 14;
 
-  // 7pm NZST = 7am UTC (NZST is UTC+12), NZDT = 6am UTC (UTC+13)
-  // Use a rough heuristic: Oct-Mar is NZDT (UTC+13), Apr-Sep is NZST (UTC+12)
-  const isDst = month >= 10 || month <= 3;
-  const utcHour = isDst ? 6 : 7;
+  // Use Intl to get the real UTC offset for this date in NZ (handles DST correctly)
+  const ref = new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
+  const nzHour = parseInt(
+    new Intl.DateTimeFormat("en-US", {
+      timeZone: "Pacific/Auckland",
+      hour: "2-digit",
+      hour12: false,
+    }).format(ref),
+  );
+  const offsetHours = nzHour - 12; // 12 (NZST) or 13 (NZDT)
 
-  const date = new Date(Date.UTC(year, month - 1, thirdTue, utcHour, 0, 0));
-  return date.toISOString();
+  return new Date(Date.UTC(year, month - 1, day, MEETING_HOUR - offsetHours, MEETING_MINUTE, 0)).toISOString();
+}
+
+/** Convert a datetime-local value (NZ time) to an ISO string. */
+function nzToIso(datetimeLocal: string): string {
+  // datetimeLocal is "YYYY-MM-DDTHH:MM" in Pacific/Auckland
+  const [datePart, timePart] = datetimeLocal.split("T");
+  const [y, m, d] = datePart.split("-").map(Number);
+  const [h, min] = timePart.split(":").map(Number);
+
+  // Get NZ offset for this date
+  const ref = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
+  const nzHour = parseInt(
+    new Intl.DateTimeFormat("en-US", {
+      timeZone: "Pacific/Auckland",
+      hour: "2-digit",
+      hour12: false,
+    }).format(ref),
+  );
+  const offsetHours = nzHour - 12;
+
+  return new Date(Date.UTC(y, m - 1, d, h - offsetHours, min, 0)).toISOString();
 }
 
 // --- GET: list all books ---
@@ -56,6 +81,7 @@ export async function POST(request: NextRequest) {
       month?: number;
       year?: number;
       isbn?: string;
+      customDate?: string;
       sha: string;
     };
 
@@ -86,7 +112,9 @@ export async function POST(request: NextRequest) {
     };
 
     if (body.month && body.year) {
-      book.meetingDate = thirdTuesday(body.year, body.month);
+      book.meetingDate = body.customDate
+        ? nzToIso(body.customDate)
+        : thirdTuesday(body.year, body.month);
       book.month = body.month;
       book.year = body.year;
     }
@@ -113,6 +141,7 @@ export async function PUT(request: NextRequest) {
       month?: number;
       year?: number;
       isbn?: string;
+      customDate?: string;
       sha: string;
     };
 
@@ -147,7 +176,9 @@ export async function PUT(request: NextRequest) {
 
     if (body.month !== undefined && body.year !== undefined) {
       if (body.month && body.year) {
-        existing.meetingDate = thirdTuesday(body.year, body.month);
+        existing.meetingDate = body.customDate
+          ? nzToIso(body.customDate)
+          : thirdTuesday(body.year, body.month);
         existing.month = body.month;
         existing.year = body.year;
       } else {

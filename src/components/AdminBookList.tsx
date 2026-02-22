@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import type { Book } from "@/lib/types";
+import type { Book, Member } from "@/lib/types";
 import BookForm, { type BookFormData } from "./BookForm";
 
 type SortField = "title" | "author" | "proposer" | "date";
@@ -9,6 +9,7 @@ type SortField = "title" | "author" | "proposer" | "date";
 export default function AdminBookList() {
   const [books, setBooks] = useState<Book[]>([]);
   const [sha, setSha] = useState("");
+  const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -22,11 +23,19 @@ export default function AdminBookList() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/books");
-      if (!res.ok) throw new Error(`Failed to load books: ${res.status}`);
-      const data = await res.json();
-      setBooks(data.books);
-      setSha(data.sha);
+      const [booksRes, membersRes] = await Promise.all([
+        fetch("/api/books"),
+        fetch("/api/members"),
+      ]);
+      if (!booksRes.ok) throw new Error(`Failed to load books: ${booksRes.status}`);
+      const booksData = await booksRes.json();
+      setBooks(booksData.books);
+      setSha(booksData.sha);
+
+      if (membersRes.ok) {
+        const membersData = await membersRes.json();
+        setMembers(membersData.members);
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to load books");
     } finally {
@@ -167,7 +176,7 @@ export default function AdminBookList() {
       {adding ? (
         <div className="rounded-xl border border-amber-300 bg-amber-50/80 p-5">
           <h2 className="mb-4 text-lg font-bold text-amber-900">Add Book</h2>
-          <BookForm onSave={handleAdd} onCancel={() => setAdding(false)} />
+          <BookForm members={members} onSave={handleAdd} onCancel={() => setAdding(false)} />
         </div>
       ) : (
         <div className="flex items-center gap-4">
@@ -207,6 +216,7 @@ export default function AdminBookList() {
               <BookRow
                 key={book.id}
                 book={book}
+                members={members}
                 isEditing={editingId === book.id}
                 isDeleting={deletingId === book.id}
                 onEdit={() => { setAdding(false); setEditingId(book.id); }}
@@ -224,6 +234,7 @@ export default function AdminBookList() {
 
 interface BookRowProps {
   book: Book;
+  members: Member[];
   isEditing: boolean;
   isDeleting: boolean;
   onEdit: () => void;
@@ -232,7 +243,7 @@ interface BookRowProps {
   onDelete: () => void;
 }
 
-function BookRow({ book, isEditing, isDeleting, onEdit, onCancelEdit, onSave, onDelete }: BookRowProps) {
+function BookRow({ book, members, isEditing, isDeleting, onEdit, onCancelEdit, onSave, onDelete }: BookRowProps) {
   return (
     <>
       <tr className={isEditing ? "bg-amber-50" : "hover:bg-amber-50/50"}>
@@ -284,7 +295,7 @@ function BookRow({ book, isEditing, isDeleting, onEdit, onCancelEdit, onSave, on
       {isEditing && (
         <tr>
           <td colSpan={5} className="border-t border-amber-200/40 bg-amber-50/80 px-4 py-4">
-            <BookForm book={book} onSave={onSave} onCancel={onCancelEdit} />
+            <BookForm book={book} members={members} onSave={onSave} onCancel={onCancelEdit} />
           </td>
         </tr>
       )}
