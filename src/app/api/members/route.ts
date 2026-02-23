@@ -32,32 +32,21 @@ export async function GET() {
 // --- POST: add a member ---
 export async function POST(request: NextRequest) {
   try {
-    const body = (await request.json()) as {
-      givenName: string;
-      familyName?: string;
-      email?: string;
-      sha: string;
-    };
+    const { sha, ...member } = (await request.json()) as Member & { sha: string };
 
-    if (!body.givenName?.trim()) {
+    if (!member.givenName?.trim()) {
       return NextResponse.json({ error: "Given name is required" }, { status: 400 });
     }
 
     const token = getToken();
     const { data: members, sha: currentSha } = await fetchJsonFile<Member[]>(token, MEMBERS_PATH);
 
-    if (body.sha !== currentSha) {
+    if (sha !== currentSha) {
       return NextResponse.json(
         { error: "Data has changed. Please refresh and try again." },
         { status: 409 },
       );
     }
-
-    const member: Member = {
-      givenName: body.givenName.trim(),
-      familyName: body.familyName?.trim() ?? "",
-      email: body.email?.trim() ?? "",
-    };
 
     members.push(member);
     sortMembers(members);
@@ -73,19 +62,13 @@ export async function POST(request: NextRequest) {
 // --- PUT: update a member ---
 export async function PUT(request: NextRequest) {
   try {
-    const body = (await request.json()) as {
-      originalGivenName: string;
-      originalFamilyName: string;
-      givenName?: string;
-      familyName?: string;
-      email?: string;
-      sha: string;
-    };
+    const { originalGivenName, originalFamilyName, sha, ...updated } = (await request.json()) as
+      Member & { originalGivenName: string; originalFamilyName: string; sha: string };
 
     const token = getToken();
     const { data: members, sha: currentSha } = await fetchJsonFile<Member[]>(token, MEMBERS_PATH);
 
-    if (body.sha !== currentSha) {
+    if (sha !== currentSha) {
       return NextResponse.json(
         { error: "Data has changed. Please refresh and try again." },
         { status: 409 },
@@ -93,16 +76,13 @@ export async function PUT(request: NextRequest) {
     }
 
     const index = members.findIndex(
-      (m) => m.givenName === body.originalGivenName && m.familyName === body.originalFamilyName,
+      (m) => m.givenName === originalGivenName && m.familyName === originalFamilyName,
     );
     if (index === -1) {
       return NextResponse.json({ error: "Member not found" }, { status: 404 });
     }
 
-    if (body.givenName !== undefined) members[index].givenName = body.givenName.trim();
-    if (body.familyName !== undefined) members[index].familyName = body.familyName.trim();
-    if (body.email !== undefined) members[index].email = body.email.trim();
-
+    members[index] = updated;
     sortMembers(members);
 
     await commitJsonFile(token, MEMBERS_PATH, members, currentSha, `Update member "${members[index].givenName}"`);

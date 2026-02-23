@@ -71,54 +71,60 @@ export async function GET() {
   }
 }
 
+/** Shape of the form payload from the client (shared by POST and PUT). */
+interface BookPayload {
+  title: string;
+  author: string;
+  proposer: string;
+  month: number;
+  year: number;
+  isbn: string;
+  customDate?: string;
+}
+
+/** Build the core Book fields from a form payload, plus cover lookup. */
+async function bookFromPayload(payload: BookPayload, id: string): Promise<Book> {
+  const { title, author, proposer, isbn, month, year, customDate } = payload;
+  const coverResult = await findCover(title, author, isbn);
+
+  const book: Book = {
+    id,
+    title: title.trim(),
+    author: author.trim() || undefined,
+    proposer: proposer.trim(),
+    isbn: isbn.trim() || coverResult.isbn || undefined,
+    coverUrl: coverResult.coverUrl,
+  };
+
+  if (month && year) {
+    book.meetingDate = customDate ? nzToIso(customDate) : thirdTuesday(year, month);
+    book.month = month;
+    book.year = year;
+  }
+
+  return book;
+}
+
 // --- POST: add a book ---
 export async function POST(request: NextRequest) {
   try {
-    const body = (await request.json()) as {
-      title: string;
-      author?: string;
-      proposer?: string;
-      month?: number;
-      year?: number;
-      isbn?: string;
-      customDate?: string;
-      sha: string;
-    };
+    const { sha, ...payload } = (await request.json()) as BookPayload & { sha: string };
 
-    if (!body.title?.trim()) {
+    if (!payload.title?.trim()) {
       return NextResponse.json({ error: "Title is required" }, { status: 400 });
     }
 
     const token = getToken();
     const { books, sha: currentSha } = await fetchBooks(token);
 
-    if (body.sha !== currentSha) {
+    if (sha !== currentSha) {
       return NextResponse.json(
         { error: "Data has changed. Please refresh and try again." },
         { status: 409 },
       );
     }
 
-    // Look up cover and ISBN
-    const coverResult = await findCover(body.title, body.author, body.isbn);
-
-    const book: Book = {
-      id: generateId(),
-      title: body.title.trim(),
-      author: body.author?.trim() || undefined,
-      proposer: body.proposer?.trim() ?? "",
-      isbn: body.isbn?.trim() || coverResult.isbn || undefined,
-      coverUrl: coverResult.coverUrl,
-    };
-
-    if (body.month && body.year) {
-      book.meetingDate = body.customDate
-        ? nzToIso(body.customDate)
-        : thirdTuesday(body.year, body.month);
-      book.month = body.month;
-      book.year = body.year;
-    }
-
+    const book = await bookFromPayload(payload, generateId());
     books.push(book);
     sortBooks(books);
 
@@ -133,76 +139,41 @@ export async function POST(request: NextRequest) {
 // --- PUT: update a book ---
 export async function PUT(request: NextRequest) {
   try {
-    const body = (await request.json()) as {
-      id: string;
-      title?: string;
-      author?: string;
-      proposer?: string;
-      month?: number;
-      year?: number;
-      isbn?: string;
-      customDate?: string;
-      sha: string;
-    };
+    const { id, sha, ...payload } = (await request.json()) as BookPayload & { id: string; sha: string };
 
-    if (!body.id) {
+    if (!id) {
       return NextResponse.json({ error: "ID is required" }, { status: 400 });
     }
 
     const token = getToken();
     const { books, sha: currentSha } = await fetchBooks(token);
 
-    if (body.sha !== currentSha) {
+    if (sha !== currentSha) {
       return NextResponse.json(
         { error: "Data has changed. Please refresh and try again." },
         { status: 409 },
       );
     }
 
-    const index = books.findIndex((b) => b.id === body.id);
+    const index = books.findIndex((b) => b.id === id);
     if (index === -1) {
       return NextResponse.json({ error: "Book not found" }, { status: 404 });
     }
 
+    const updated = await bookFromPayload(payload, id);
+
+    // Preserve existing cover if the lookup didn't find one and content hasn't changed
     const existing = books[index];
-    const titleChanged = body.title !== undefined && body.title !== existing.title;
-    const authorChanged = body.author !== undefined && body.author !== existing.author;
-    const isbnChanged = body.isbn !== undefined && body.isbn !== existing.isbn;
-
-    if (body.title !== undefined) existing.title = body.title.trim();
-    if (body.author !== undefined) existing.author = body.author.trim() || undefined;
-    if (body.proposer !== undefined) existing.proposer = body.proposer.trim();
-    if (body.isbn !== undefined) existing.isbn = body.isbn.trim() || undefined;
-
-    if (body.month !== undefined && body.year !== undefined) {
-      if (body.month && body.year) {
-        existing.meetingDate = body.customDate
-          ? nzToIso(body.customDate)
-          : thirdTuesday(body.year, body.month);
-        existing.month = body.month;
-        existing.year = body.year;
-      } else {
-        existing.meetingDate = undefined;
-        existing.month = undefined;
-        existing.year = undefined;
-      }
+    if (!updated.coverUrl && existing.coverUrl
+      && updated.title === existing.title && updated.author === existing.author && updated.isbn === existing.isbn) {
+      updated.coverUrl = existing.coverUrl;
     }
 
-    // Re-lookup cover if title, author, or ISBN changed
-    if (titleChanged || authorChanged || isbnChanged) {
-      const coverResult = await findCover(
-        existing.title,
-        existing.author,
-        existing.isbn,
-      );
-      if (coverResult.coverUrl) existing.coverUrl = coverResult.coverUrl;
-      if (coverResult.isbn && !existing.isbn) existing.isbn = coverResult.isbn;
-    }
-
+    books[index] = updated;
     sortBooks(books);
 
-    await commitBooks(token, books, currentSha, `Update "${existing.title}"`);
-    return NextResponse.json({ book: existing });
+    await commitBooks(token, books, currentSha, `Update "${updated.title}"`);
+    return NextResponse.json({ book: updated });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.json({ error: message }, { status: 500 });

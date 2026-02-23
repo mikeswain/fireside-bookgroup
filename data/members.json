@@ -1,99 +1,24 @@
 [
-  {
-    "givenName": "Annie",
-    "familyName": "",
-    "email": "",
-    "isAdmin": false
-  },
-  {
-    "givenName": "Bryan",
-    "familyName": "",
-    "email": ""
-  },
-  {
-    "givenName": "Cat",
-    "familyName": "",
-    "email": ""
-  },
-  {
-    "givenName": "Chris",
-    "familyName": "",
-    "email": ""
-  },
-  {
-    "givenName": "Derek",
-    "familyName": "",
-    "email": ""
-  },
-  {
-    "givenName": "Diane",
-    "familyName": "",
-    "email": ""
-  },
-  {
-    "givenName": "Jackie",
-    "familyName": "",
-    "email": ""
-  },
-  {
-    "givenName": "Jenny",
-    "familyName": "",
-    "email": ""
-  },
-  {
-    "givenName": "Joe",
-    "familyName": "",
-    "email": ""
-  },
-  {
-    "givenName": "Judith",
-    "familyName": "",
-    "email": ""
-  },
-  {
-    "givenName": "Kate",
-    "familyName": "",
-    "email": ""
-  },
-  {
-    "givenName": "Kathryn",
-    "familyName": "",
-    "email": ""
-  },
-  {
-    "givenName": "Michael",
-    "familyName": "Frost",
-    "email": ""
-  },
-  {
-    "givenName": "Mike",
-    "familyName": "",
-    "email": ""
-  },
-  {
-    "givenName": "Mike",
-    "familyName": "B",
-    "email": ""
-  },
-  {
-    "givenName": "Mike",
-    "familyName": "Swain",
-    "email": "",
-    "isAdmin": true
-  },
-  {
-    "givenName": "Sandra",
-    "familyName": "",
-    "email": ""
-  },
-  {
-    "givenName": "Steve",
-    "familyName": "",
-    "email": ""
-  },
-  {
-    "givenName": "Val",
-    "familyName": "",
-    "email": ""
-  }
+  { "givenName": "Annie", "familyName": "", "email": "tiki7049@gmail.com", "notifiable": false },
+  { "givenName": "Brigett", "familyName": "", "email": "nzsteverowsell@gmail.com", "notifiable": false },
+  { "givenName": "Bryan", "familyName": "", "email": "bryan@offbeat.co.nz", "notifiable": false },
+  { "givenName": "Catherine", "familyName": "", "email": "cruhen@xtra.co.nz", "notifiable": false },
+  { "givenName": "Christopher", "familyName": "", "email": "cruhen@xtra.co.nz", "notifiable": false },
+  { "givenName": "Clint", "familyName": "", "email": "clint.gabrielle@gmail.com", "notifiable": false },
+  { "givenName": "Derek", "familyName": "", "email": "derek@estamore.co.nz", "notifiable": false },
+  { "givenName": "Diane", "familyName": "", "email": "dianenewcombe@hotmail.com", "notifiable": false },
+  { "givenName": "Gabrielle", "familyName": "", "email": "clint.gabrielle@gmail.com", "notifiable": false },
+  { "givenName": "Helen", "familyName": "", "email": "helen.darnell@xtra.co.nz", "notifiable": false },
+  { "givenName": "Jacki", "familyName": "", "email": "jacki@rehabwest.co.nz", "notifiable": false },
+  { "givenName": "Jenny", "familyName": "", "email": "jenny@hiko.co.nz", "notifiable": false },
+  { "givenName": "Joe", "familyName": "", "email": "j.a.grixti@gmail.com", "notifiable": false },
+  { "givenName": "Kate", "familyName": "", "email": "kate.shevland@gmail.com", "notifiable": false },
+  { "givenName": "Kathryn", "familyName": "", "email": "K.E.Rountree@massey.ac.nz", "notifiable": false },
+  { "givenName": "Michael", "familyName": "Frost", "email": "michaelfrost.nz@outlook.com", "notifiable": false },
+  { "givenName": "Mike", "familyName": "B", "email": "bradburymm@gmail.com", "notifiable": false },
+  { "givenName": "Mike", "familyName": "Test", "email": "mike.r.swain@gmail.com", "isAdmin": true, "notifiable": true },
+  { "givenName": "Test", "familyName": "Swain", "email": "test@hiko.co.nz", "isAdmin": false, "notifiable": true },
+  { "givenName": "Mike", "familyName": "Swain", "email": "mike@hiko.co.nz", "isAdmin": true, "notifiable": true },
+  { "givenName": "Steve", "familyName": "", "email": "nzsteverowsell@gmail.com", "notifiable": false },
+  { "givenName": "Val", "familyName": "", "email": "val.mike@xtra.co.nz", "notifiable": false }
 ]

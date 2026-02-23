@@ -35,7 +35,7 @@ export default function MemberList() {
     fetchMembers();
   }, [fetchMembers]);
 
-  const handleAdd = async (data: MemberFormData) => {
+  const handleAdd = async (data: Member) => {
     const res = await fetch("/api/members", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -49,7 +49,7 @@ export default function MemberList() {
     await fetchMembers();
   };
 
-  const handleUpdate = async (original: Member, data: MemberFormData) => {
+  const handleUpdate = async (original: Member, data: Member) => {
     const res = await fetch("/api/members", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -142,6 +142,7 @@ export default function MemberList() {
               <th className="px-3 py-2 text-sm font-medium text-amber-800">Family Name</th>
               <th className="px-3 py-2 text-sm font-medium text-amber-800">Display</th>
               <th className="px-3 py-2 text-sm font-medium text-amber-800">Email</th>
+              <th className="px-3 py-2 text-sm font-medium text-amber-800">Admin</th>
               <th className="px-3 py-2 text-sm font-medium text-amber-800">Actions</th>
             </tr>
           </thead>
@@ -170,15 +171,9 @@ export default function MemberList() {
   );
 }
 
-interface MemberFormData {
-  givenName: string;
-  familyName: string;
-  email: string;
-}
-
 interface MemberFormProps {
   member?: Member;
-  onSave: (data: MemberFormData) => Promise<void>;
+  onSave: (data: Member) => Promise<void>;
   onCancel: () => void;
 }
 
@@ -186,6 +181,8 @@ function MemberForm({ member, onSave, onCancel }: MemberFormProps) {
   const [givenName, setGivenName] = useState(member?.givenName ?? "");
   const [familyName, setFamilyName] = useState(member?.familyName ?? "");
   const [email, setEmail] = useState(member?.email ?? "");
+  const [isAdmin, setIsAdmin] = useState(member?.isAdmin ?? false);
+
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
@@ -198,15 +195,15 @@ function MemberForm({ member, onSave, onCancel }: MemberFormProps) {
     setSaving(true);
     setError("");
     try {
-      await onSave({ givenName, familyName, email });
+      await onSave({ givenName: givenName.trim(), familyName: familyName.trim(), email: email.trim(), isAdmin });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Save failed");
       setSaving(false);
     }
   };
 
-  const inputClass =
-    "w-full rounded-lg border border-amber-300/60 bg-white px-3 py-2 text-sm text-amber-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-300/40";
+  const baseInputClass = "rounded-lg border border-amber-300/60 bg-white px-3 py-2 text-sm text-amber-900 outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-300/40";
+  const inputClass = `${baseInputClass} w-full`;
   const labelClass = "block text-sm font-medium text-amber-800 mb-1";
 
   return (
@@ -247,6 +244,20 @@ function MemberForm({ member, onSave, onCancel }: MemberFormProps) {
         />
       </div>
 
+      <div className="flex justify-start gap-2 items-center">
+        <input
+          id="isAdmin"
+          type="checkbox"
+          checked={isAdmin}
+          onChange={(e) => setIsAdmin(e.target.checked)}
+          className={baseInputClass}
+          disabled={saving}
+        />
+
+        <label htmlFor="isAdmin" className={`${labelClass}`}>Admin</label>
+
+      </div>
+
       {error && <p className="text-sm text-red-600">{error}</p>}
 
       <div className="flex gap-3 pt-2">
@@ -276,7 +287,7 @@ interface MemberRowProps {
   isDeleting: boolean;
   onEdit: () => void;
   onCancelEdit: () => void;
-  onSave: (data: MemberFormData) => Promise<void>;
+  onSave: (data: Member) => Promise<void>;
   onDelete: () => void;
 }
 
@@ -288,6 +299,7 @@ function MemberRow({ member, isEditing, isDeleting, onEdit, onCancelEdit, onSave
         <td className="px-3 py-2 text-sm text-amber-700">{member.familyName || "\u2014"}</td>
         <td className="px-3 py-2 text-sm text-amber-600">{displayName(member)}</td>
         <td className="px-3 py-2 text-sm text-amber-700">{member.email || "\u2014"}</td>
+        <td className="px-3 py-2 text-sm text-amber-700">{member.isAdmin ? "Yes" : "\u2014"}</td>
         <td className="px-3 py-2 text-sm">
           <div className="flex gap-2">
             <button
@@ -309,7 +321,7 @@ function MemberRow({ member, isEditing, isDeleting, onEdit, onCancelEdit, onSave
       </tr>
       {isEditing && (
         <tr>
-          <td colSpan={5} className="border-t border-amber-200/40 bg-amber-50/80 px-4 py-4">
+          <td colSpan={6} className="border-t border-amber-200/40 bg-amber-50/80 px-4 py-4">
             <MemberForm member={member} onSave={onSave} onCancel={onCancelEdit} />
           </td>
         </tr>

@@ -14,6 +14,7 @@ export interface Member {
   givenName: string;
   familyName: string;
   email?: string;
+  isAdmin?: boolean;
 }
 
 /** Format a member's name for display: "Mike S." or just "Annie" if no family name. */
