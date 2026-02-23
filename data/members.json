@@ -1,21 +1,97 @@
 [
-  { "givenName": "Annie", "familyName": "", "email": "" },
-  { "givenName": "Bryan", "familyName": "", "email": "" },
-  { "givenName": "Cat", "familyName": "", "email": "" },
-  { "givenName": "Chris", "familyName": "", "email": "" },
-  { "givenName": "Derek", "familyName": "", "email": "" },
-  { "givenName": "Diane", "familyName": "", "email": "" },
-  { "givenName": "Jackie", "familyName": "", "email": "" },
-  { "givenName": "Jenny", "familyName": "", "email": "" },
-  { "givenName": "Joe", "familyName": "", "email": "" },
-  { "givenName": "Judith", "familyName": "", "email": "" },
-  { "givenName": "Kate", "familyName": "", "email": "" },
-  { "givenName": "Kathryn", "familyName": "", "email": "" },
-  { "givenName": "Michael", "familyName": "Frost", "email": "" },
-  { "givenName": "Mike", "familyName": "", "email": "" },
-  { "givenName": "Mike", "familyName": "B", "email": "" },
-  { "givenName": "Mike", "familyName": "S", "email": "" },
-  { "givenName": "Sandra", "familyName": "", "email": "" },
-  { "givenName": "Steve", "familyName": "", "email": "" },
-  { "givenName": "Val", "familyName": "", "email": "" }
+  {
+    "givenName": "Annie",
+    "familyName": "",
+    "email": ""
+  },
+  {
+    "givenName": "Bryan",
+    "familyName": "",
+    "email": ""
+  },
+  {
+    "givenName": "Cat",
+    "familyName": "",
+    "email": ""
+  },
+  {
+    "givenName": "Chris",
+    "familyName": "",
+    "email": ""
+  },
+  {
+    "givenName": "Derek",
+    "familyName": "",
+    "email": ""
+  },
+  {
+    "givenName": "Diane",
+    "familyName": "",
+    "email": ""
+  },
+  {
+    "givenName": "Jackie",
+    "familyName": "",
+    "email": ""
+  },
+  {
+    "givenName": "Jenny",
+    "familyName": "",
+    "email": ""
+  },
+  {
+    "givenName": "Joe",
+    "familyName": "",
+    "email": ""
+  },
+  {
+    "givenName": "Judith",
+    "familyName": "",
+    "email": ""
+  },
+  {
+    "givenName": "Kate",
+    "familyName": "",
+    "email": ""
+  },
+  {
+    "givenName": "Kathryn",
+    "familyName": "",
+    "email": ""
+  },
+  {
+    "givenName": "Michael",
+    "familyName": "Frost",
+    "email": ""
+  },
+  {
+    "givenName": "Mike",
+    "familyName": "",
+    "email": ""
+  },
+  {
+    "givenName": "Mike",
+    "familyName": "B",
+    "email": ""
+  },
+  {
+    "givenName": "Mike",
+    "familyName": "S",
+    "email": ""
+  },
+  {
+    "givenName": "Sandra",
+    "familyName": "",
+    "email": ""
+  },
+  {
+    "givenName": "Steve",
+    "familyName": "",
+    "email": ""
+  },
+  {
+    "givenName": "Val",
+    "familyName": "",
+    "email": ""
+  }
 ]
