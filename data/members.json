@@ -77,8 +77,9 @@
   },
   {
     "givenName": "Mike",
-    "familyName": "S",
-    "email": ""
+    "familyName": "Swain",
+    "email": "",
+    "isAdmin": true
   },
   {
     "givenName": "Sandra",
