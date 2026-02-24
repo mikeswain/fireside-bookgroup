@@ -1,8 +1,8 @@
 import { statSync } from "fs";
 import { join } from "path";
 import BookList from "@/components/BookList";
+import UserNav from "@/components/UserNav";
 import { getBooks } from "@/lib/books";
-import { NextResponse } from "next/server";
 
 export default function Home() {
   const now = new Date();
@@ -58,12 +58,9 @@ export default function Home() {
             </p>
           </div>
         </div>
-        <a
-          href="/admin"
-          className="absolute top-3 right-3 rounded-md bg-amber-900/40 px-3 py-1 text-xs font-medium text-amber-200/80 backdrop-blur-sm hover:bg-amber-900/60 hover:text-amber-100"
-        >
-          Admin
-        </a>
+        <div className="absolute top-3 right-3">
+          <UserNav variant="hero" currentPage="home" />
+        </div>
         <p className="absolute bottom-2 right-3 text-xs text-amber-200/60">
           Updated {lastUpdated}
         </p>

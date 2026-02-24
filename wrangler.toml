@@ -5,3 +5,4 @@ pages_build_output_dir = ".vercel/output/static"
 [vars]
 GITHUB_REPO = "mikeswain/fireside-bookgroup"
 GITHUB_BRANCH = "master"
+EMAIL_FROM = "noreply@notifications.hiko.co.nz"

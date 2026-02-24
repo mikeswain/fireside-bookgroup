@@ -143,6 +143,7 @@ export default function MemberList() {
               <th className="px-3 py-2 text-sm font-medium text-amber-800">Display</th>
               <th className="px-3 py-2 text-sm font-medium text-amber-800">Email</th>
               <th className="px-3 py-2 text-sm font-medium text-amber-800">Admin</th>
+              <th className="px-3 py-2 text-sm font-medium text-amber-800">Notify</th>
               <th className="px-3 py-2 text-sm font-medium text-amber-800">Actions</th>
             </tr>
           </thead>
@@ -182,6 +183,7 @@ function MemberForm({ member, onSave, onCancel }: MemberFormProps) {
   const [familyName, setFamilyName] = useState(member?.familyName ?? "");
   const [email, setEmail] = useState(member?.email ?? "");
   const [isAdmin, setIsAdmin] = useState(member?.isAdmin ?? false);
+  const [notifiable, setNotifiable] = useState(member?.notifiable ?? false);
 
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -195,7 +197,7 @@ function MemberForm({ member, onSave, onCancel }: MemberFormProps) {
     setSaving(true);
     setError("");
     try {
-      await onSave({ givenName: givenName.trim(), familyName: familyName.trim(), email: email.trim(), isAdmin });
+      await onSave({ givenName: givenName.trim(), familyName: familyName.trim(), email: email.trim(), isAdmin, notifiable });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Save failed");
       setSaving(false);
@@ -255,7 +257,18 @@ function MemberForm({ member, onSave, onCancel }: MemberFormProps) {
         />
 
         <label htmlFor="isAdmin" className={`${labelClass}`}>Admin</label>
+      </div>
 
+      <div className="flex justify-start gap-2 items-center">
+        <input
+          id="notifiable"
+          type="checkbox"
+          checked={notifiable}
+          onChange={(e) => setNotifiable(e.target.checked)}
+          className={baseInputClass}
+          disabled={saving}
+        />
+        <label htmlFor="notifiable" className={`${labelClass}`}>Notifiable</label>
       </div>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
@@ -300,6 +313,7 @@ function MemberRow({ member, isEditing, isDeleting, onEdit, onCancelEdit, onSave
         <td className="px-3 py-2 text-sm text-amber-600">{displayName(member)}</td>
         <td className="px-3 py-2 text-sm text-amber-700">{member.email || "\u2014"}</td>
         <td className="px-3 py-2 text-sm text-amber-700">{member.isAdmin ? "Yes" : "\u2014"}</td>
+        <td className="px-3 py-2 text-sm text-amber-700">{member.notifiable ? "Yes" : "\u2014"}</td>
         <td className="px-3 py-2 text-sm">
           <div className="flex gap-2">
             <button
@@ -321,7 +335,7 @@ function MemberRow({ member, isEditing, isDeleting, onEdit, onCancelEdit, onSave
       </tr>
       {isEditing && (
         <tr>
-          <td colSpan={6} className="border-t border-amber-200/40 bg-amber-50/80 px-4 py-4">
+          <td colSpan={7} className="border-t border-amber-200/40 bg-amber-50/80 px-4 py-4">
             <MemberForm member={member} onSave={onSave} onCancel={onCancelEdit} />
           </td>
         </tr>

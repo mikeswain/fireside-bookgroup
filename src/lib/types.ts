@@ -15,6 +15,7 @@ export interface Member {
   familyName: string;
   email?: string;
   isAdmin?: boolean;
+  notifiable?: boolean;
 }
 
 /** Format a member's name for display: "Mike S." or just "Annie" if no family name. */

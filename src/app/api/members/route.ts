@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { fetchJsonFile, commitJsonFile } from "@/lib/github";
+import { requireAdmin } from "@/lib/auth";
 import type { Member } from "@/lib/types";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 const MEMBERS_PATH = "data/members.json";
 
@@ -19,8 +20,11 @@ function sortMembers(members: Member[]): void {
 }
 
 // --- GET: list all members ---
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const auth = await requireAdmin(request);
+    if (auth instanceof NextResponse) return auth;
+
     const { data: members, sha } = await fetchJsonFile<Member[]>(getToken(), MEMBERS_PATH);
     return NextResponse.json({ members, sha });
   } catch (err) {
@@ -32,6 +36,9 @@ export async function GET() {
 // --- POST: add a member ---
 export async function POST(request: NextRequest) {
   try {
+    const auth = await requireAdmin(request);
+    if (auth instanceof NextResponse) return auth;
+
     const { sha, ...member } = (await request.json()) as Member & { sha: string };
 
     if (!member.givenName?.trim()) {
@@ -62,6 +69,9 @@ export async function POST(request: NextRequest) {
 // --- PUT: update a member ---
 export async function PUT(request: NextRequest) {
   try {
+    const auth = await requireAdmin(request);
+    if (auth instanceof NextResponse) return auth;
+
     const { originalGivenName, originalFamilyName, sha, ...updated } = (await request.json()) as
       Member & { originalGivenName: string; originalFamilyName: string; sha: string };
 
@@ -96,6 +106,9 @@ export async function PUT(request: NextRequest) {
 // --- DELETE: remove a member ---
 export async function DELETE(request: NextRequest) {
   try {
+    const auth = await requireAdmin(request);
+    if (auth instanceof NextResponse) return auth;
+
     const body = (await request.json()) as {
       givenName: string;
       familyName: string;

@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { fetchBooks, commitBooks } from "@/lib/github";
 import { findCover } from "@/lib/covers";
+import { requireAdmin } from "@/lib/auth";
 import type { Book } from "@/lib/types";
 
-export const runtime = 'edge';
+export const runtime = "nodejs";
 function getToken(): string {
   const token = process.env.GITHUB_TOKEN;
   if (!token) throw new Error("GITHUB_TOKEN not configured");
@@ -108,6 +109,9 @@ async function bookFromPayload(payload: BookPayload, id: string): Promise<Book> 
 // --- POST: add a book ---
 export async function POST(request: NextRequest) {
   try {
+    const auth = await requireAdmin(request);
+    if (auth instanceof NextResponse) return auth;
+
     const { sha, ...payload } = (await request.json()) as BookPayload & { sha: string };
 
     if (!payload.title?.trim()) {
@@ -139,6 +143,9 @@ export async function POST(request: NextRequest) {
 // --- PUT: update a book ---
 export async function PUT(request: NextRequest) {
   try {
+    const auth = await requireAdmin(request);
+    if (auth instanceof NextResponse) return auth;
+
     const { id, sha, ...payload } = (await request.json()) as BookPayload & { id: string; sha: string };
 
     if (!id) {
@@ -183,6 +190,9 @@ export async function PUT(request: NextRequest) {
 // --- DELETE: remove a book ---
 export async function DELETE(request: NextRequest) {
   try {
+    const auth = await requireAdmin(request);
+    if (auth instanceof NextResponse) return auth;
+
     const body = (await request.json()) as { id: string; sha: string; };
 
     if (!body.id) {

@@ -1,5 +1,6 @@
 import AdminBookList from "@/components/AdminBookList";
 import MemberList from "@/components/MemberList";
+import UserNav from "@/components/UserNav";
 
 export const runtime = "edge";
 
@@ -15,19 +16,14 @@ export default function AdminPage() {
             Add, edit, and delete books. Changes commit to GitHub and trigger a rebuild.
           </p>
         </div>
-        <div className="flex gap-3">
+        <div className="flex items-center gap-3">
           <a
             href="/"
             className="rounded-lg border border-amber-300 bg-amber-50 px-4 py-2 text-sm font-medium text-amber-900 hover:bg-amber-100"
           >
             &larr; Back to site
           </a>
-          <a
-            href="/cdn-cgi/access/logout"
-            className="rounded-lg border border-amber-300 bg-amber-50 px-4 py-2 text-sm font-medium text-amber-900 hover:bg-amber-100"
-          >
-            Logout
-          </a>
+          <UserNav variant="page" currentPage="admin" />
         </div>
       </div>
       <AdminBookList />

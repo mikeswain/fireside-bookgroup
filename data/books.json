@@ -5,7 +5,7 @@
     "title": "Where The Crawdads Sing",
     "author": "Delia Owens",
     "isbn": "9788417743390",
-    "meetingDate": "2020-01-21T06:30:00.000Z",
+    "meetingDate": "2020-01-21T06:00:00.000Z",
     "month": 1,
     "year": 2020,
     "coverUrl": "https://covers.openlibrary.org/b/id/8362947-M.jpg"
@@ -16,7 +16,7 @@
     "title": "I Heard the Owl Call My Name",
     "author": "Margaret Craven",
     "isbn": "9780370109350",
-    "meetingDate": "2020-02-18T06:30:00.000Z",
+    "meetingDate": "2020-02-18T06:00:00.000Z",
     "month": 2,
     "year": 2020,
     "coverUrl": "https://covers.openlibrary.org/b/id/281901-M.jpg"
@@ -27,7 +27,7 @@
     "title": "Outline",
     "author": "Rachel Cusk",
     "isbn": "9781410478689",
-    "meetingDate": "2020-03-17T06:30:00.000Z",
+    "meetingDate": "2020-03-17T06:00:00.000Z",
     "month": 3,
     "year": 2020,
     "coverUrl": "https://covers.openlibrary.org/b/id/9079084-M.jpg"
@@ -38,7 +38,7 @@
     "title": "A Gesture Life",
     "author": "Chang-Rae Lee",
     "isbn": "9788959242528",
-    "meetingDate": "2020-05-19T07:30:00.000Z",
+    "meetingDate": "2020-05-19T07:00:00.000Z",
     "month": 5,
     "year": 2020,
     "coverUrl": "https://covers.openlibrary.org/b/id/1957356-M.jpg"
@@ -49,7 +49,7 @@
     "title": "Infidel",
     "author": "Ayaan Hirsi Ali",
     "isbn": "9780743289696",
-    "meetingDate": "2020-06-16T07:30:00.000Z",
+    "meetingDate": "2020-06-16T07:00:00.000Z",
     "month": 6,
     "year": 2020,
     "coverUrl": "https://covers.openlibrary.org/b/id/475359-M.jpg"
@@ -60,7 +60,7 @@
     "title": "Little Fires Everywhere",
     "author": "Celeste Ng",
     "isbn": "9783423147231",
-    "meetingDate": "2020-07-21T07:30:00.000Z",
+    "meetingDate": "2020-07-21T07:00:00.000Z",
     "month": 7,
     "year": 2020,
     "coverUrl": "https://covers.openlibrary.org/b/id/8111914-M.jpg"
@@ -71,7 +71,7 @@
     "title": "Ghost Wall",
     "author": "Sarah Moss",
     "isbn": "9780374161927",
-    "meetingDate": "2020-08-18T07:30:00.000Z",
+    "meetingDate": "2020-08-18T07:00:00.000Z",
     "month": 8,
     "year": 2020,
     "coverUrl": "https://covers.openlibrary.org/b/id/9051676-M.jpg"
@@ -82,7 +82,7 @@
     "title": "The Strength of Eggshells",
     "author": "Kirsty Powell",
     "isbn": "9780473474201",
-    "meetingDate": "2020-09-15T07:30:00.000Z",
+    "meetingDate": "2020-09-15T07:00:00.000Z",
     "month": 9,
     "year": 2020,
     "coverUrl": "https://covers.openlibrary.org/b/id/10946992-M.jpg"
@@ -92,7 +92,7 @@
     "proposer": "Sandra",
     "title": "40 Autumns",
     "author": "Nina Willner",
-    "meetingDate": "2020-10-20T06:30:00.000Z",
+    "meetingDate": "2020-10-20T06:00:00.000Z",
     "month": 10,
     "year": 2020
   },
@@ -102,7 +102,7 @@
     "title": "Leaves Of The Banyan Tree",
     "author": "Albert Wendt",
     "isbn": "9780582717701",
-    "meetingDate": "2020-11-17T06:30:00.000Z",
+    "meetingDate": "2020-11-17T06:00:00.000Z",
     "month": 11,
     "year": 2020,
     "coverUrl": "https://covers.openlibrary.org/b/id/626854-M.jpg"
@@ -111,7 +111,7 @@
     "id": "3243aead9833",
     "proposer": "Jenny",
     "title": "Free for all of books we've read.",
-    "meetingDate": "2020-12-15T06:30:00.000Z",
+    "meetingDate": "2020-12-15T06:00:00.000Z",
     "month": 12,
     "year": 2020,
     "coverUrl": "https://books.google.com/books/content?id=oXrlDwAAQBAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api"
@@ -121,7 +121,7 @@
     "proposer": "Val",
     "title": "The Salt Path",
     "author": "Raynor Winn",
-    "meetingDate": "2021-01-19T06:30:00.000Z",
+    "meetingDate": "2021-01-19T06:00:00.000Z",
     "month": 1,
     "year": 2021,
     "coverUrl": "https://books.google.com/books/content?id=b1lHDwAAQBAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api"
@@ -132,7 +132,7 @@
     "title": "Dirt Music",
     "author": "Tim Winton",
     "isbn": "9780330363235",
-    "meetingDate": "2021-02-16T06:30:00.000Z",
+    "meetingDate": "2021-02-16T06:00:00.000Z",
     "month": 2,
     "year": 2021,
     "coverUrl": "https://covers.openlibrary.org/b/id/472525-M.jpg"
@@ -143,7 +143,7 @@
     "title": "Mythos",
     "author": "Stephen Fry",
     "isbn": "9780718188740",
-    "meetingDate": "2021-03-16T06:30:00.000Z",
+    "meetingDate": "2021-03-16T06:00:00.000Z",
     "month": 3,
     "year": 2021,
     "coverUrl": "https://covers.openlibrary.org/b/id/8238803-M.jpg"
@@ -153,8 +153,8 @@
     "proposer": "Jenny",
     "title": "A Prayer for Owen Meany",
     "author": "John Irving",
-    "isbn": "9780345361790",
-    "meetingDate": "2021-04-20T07:30:00.000Z",
+    "isbn": "9783257018509",
+    "meetingDate": "2021-04-20T07:00:00.000Z",
     "month": 4,
     "year": 2021,
     "coverUrl": "https://covers.openlibrary.org/b/id/5414972-M.jpg"
@@ -164,7 +164,7 @@
     "proposer": "Bryan",
     "title": "Where the Rēkohu Bone Sings",
     "author": "Tina Makareti",
-    "meetingDate": "2021-05-18T07:30:00.000Z",
+    "meetingDate": "2021-05-18T07:00:00.000Z",
     "month": 5,
     "year": 2021,
     "coverUrl": "https://books.google.com/books/content?id=E_WcDwAAQBAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api"
@@ -175,7 +175,7 @@
     "title": "The Overstory",
     "author": "Richard Powers",
     "isbn": "9782749158273",
-    "meetingDate": "2021-06-15T07:30:00.000Z",
+    "meetingDate": "2021-06-15T07:00:00.000Z",
     "month": 6,
     "year": 2021,
     "coverUrl": "https://covers.openlibrary.org/b/id/8758252-M.jpg"
@@ -186,7 +186,7 @@
     "title": "Chickenhawk",
     "author": "Robert Mason",
     "isbn": "9781101175156",
-    "meetingDate": "2021-07-20T07:30:00.000Z",
+    "meetingDate": "2021-07-20T07:00:00.000Z",
     "month": 7,
     "year": 2021,
     "coverUrl": "https://covers.openlibrary.org/b/id/93944-M.jpg"
@@ -197,7 +197,7 @@
     "title": "Danger Zone",
     "author": "Maurice Shadbolt",
     "isbn": "9780340202401",
-    "meetingDate": "2021-08-17T07:30:00.000Z",
+    "meetingDate": "2021-08-17T07:00:00.000Z",
     "month": 8,
     "year": 2021,
     "coverUrl": "https://covers.openlibrary.org/b/id/8406033-M.jpg"
@@ -208,7 +208,7 @@
     "title": "Walking With Ghosts",
     "author": "Gabriel Byrne",
     "isbn": "9780802157126",
-    "meetingDate": "2021-09-21T07:30:00.000Z",
+    "meetingDate": "2021-09-21T07:00:00.000Z",
     "month": 9,
     "year": 2021,
     "coverUrl": "https://covers.openlibrary.org/b/id/11763669-M.jpg"
@@ -218,7 +218,7 @@
     "proposer": "Judith",
     "title": "Where Once My Heart used to Beat",
     "author": "Sebastian Faulks",
-    "meetingDate": "2021-10-19T06:30:00.000Z",
+    "meetingDate": "2021-10-19T06:00:00.000Z",
     "month": 10,
     "year": 2021,
     "coverUrl": "https://books.google.com/books/content?id=XNbGEAAAQBAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api"
@@ -228,7 +228,7 @@
     "proposer": "Val",
     "title": "The Whitstable High Tide Swimming Club",
     "author": "Katie May",
-    "meetingDate": "2021-11-16T06:30:00.000Z",
+    "meetingDate": "2021-11-16T06:00:00.000Z",
     "month": 11,
     "year": 2021,
     "coverUrl": "https://books.google.com/books/content?id=GKgFDgAAQBAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api"
@@ -238,7 +238,7 @@
     "proposer": "Jackie",
     "title": "Skeletons on the Zahara: A true story of survival.",
     "author": "Dean King",
-    "meetingDate": "2021-12-21T06:30:00.000Z",
+    "meetingDate": "2021-12-21T06:00:00.000Z",
     "month": 12,
     "year": 2021
   },
@@ -248,7 +248,7 @@
     "title": "A Gentleman in Moscow",
     "author": "Amor Towles",
     "isbn": "9780735221673",
-    "meetingDate": "2022-01-18T06:30:00.000Z",
+    "meetingDate": "2022-01-18T06:00:00.000Z",
     "month": 1,
     "year": 2022,
     "coverUrl": "https://covers.openlibrary.org/b/id/11326818-M.jpg"
@@ -259,7 +259,7 @@
     "title": "The Garden of Evening Mists",
     "author": "Tan Twan Eng",
     "isbn": "9781471216664",
-    "meetingDate": "2022-02-15T06:30:00.000Z",
+    "meetingDate": "2022-02-15T06:00:00.000Z",
     "month": 2,
     "year": 2022,
     "coverUrl": "https://covers.openlibrary.org/b/id/8334888-M.jpg"
@@ -270,7 +270,7 @@
     "title": "The Bone People",
     "author": "Keri Hulme",
     "isbn": "9780330332804",
-    "meetingDate": "2022-03-15T06:30:00.000Z",
+    "meetingDate": "2022-03-15T06:00:00.000Z",
     "month": 3,
     "year": 2022,
     "coverUrl": "https://covers.openlibrary.org/b/id/3080172-M.jpg"
@@ -280,7 +280,7 @@
     "proposer": "Val",
     "title": "From There to Here (with an awful lot in between)",
     "author": "Pat Backley",
-    "meetingDate": "2022-04-19T07:30:00.000Z",
+    "meetingDate": "2022-04-19T07:00:00.000Z",
     "month": 4,
     "year": 2022
   },
@@ -290,7 +290,7 @@
     "title": "The Power of the Dog",
     "author": "Thomas Savage",
     "isbn": "9781574904727",
-    "meetingDate": "2022-05-17T07:30:00.000Z",
+    "meetingDate": "2022-05-17T07:00:00.000Z",
     "month": 5,
     "year": 2022,
     "coverUrl": "https://covers.openlibrary.org/b/id/189420-M.jpg"
@@ -301,7 +301,7 @@
     "title": "The Daughter of Time",
     "author": "Josephine Tey",
     "isbn": "9798738060571",
-    "meetingDate": "2022-06-21T07:30:00.000Z",
+    "meetingDate": "2022-06-21T07:00:00.000Z",
     "month": 6,
     "year": 2022,
     "coverUrl": "https://covers.openlibrary.org/b/id/6485299-M.jpg"
@@ -311,10 +311,10 @@
     "proposer": "Kate",
     "title": "The lost  pianos  of Siberia",
     "author": "Sophy Roberts",
-    "meetingDate": "2022-07-19T07:30:00.000Z",
+    "meetingDate": "2022-07-19T07:00:00.000Z",
     "month": 7,
     "year": 2022,
-    "coverUrl": "https://books.google.com/books/content?id=LUhhDwAAQBAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api"
+    "coverUrl": "https://storage.googleapis.com/circlesoft/document/photos/004/077/278/homepage_temp_img.jpg20250617-1-3vnjzg?1750144860"
   },
   {
     "id": "408e82849402",
@@ -322,7 +322,7 @@
     "title": "Klara and the Sun",
     "author": "Kazuo Ishiguro",
     "isbn": "9780571364886",
-    "meetingDate": "2022-08-16T07:30:00.000Z",
+    "meetingDate": "2022-08-16T07:00:00.000Z",
     "month": 8,
     "year": 2022,
     "coverUrl": "https://covers.openlibrary.org/b/id/10648686-M.jpg"
@@ -332,7 +332,7 @@
     "proposer": "Steve",
     "title": "Concordia (AKA The Jew Store)",
     "author": "Stella Suberman",
-    "meetingDate": "2022-09-20T07:30:00.000Z",
+    "meetingDate": "2022-09-20T07:00:00.000Z",
     "month": 9,
     "year": 2022
   },
@@ -342,7 +342,7 @@
     "title": "The Mirror Book",
     "author": "Charlotte Grimshaw",
     "isbn": "9780143776000",
-    "meetingDate": "2022-10-18T06:30:00.000Z",
+    "meetingDate": "2022-10-18T06:00:00.000Z",
     "month": 10,
     "year": 2022,
     "coverUrl": "https://books.google.com/books/content?id=urMlEAAAQBAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api"
@@ -353,7 +353,7 @@
     "title": "Americanah",
     "author": "Chimamanda Ngozi Adichie",
     "isbn": "9781471241468",
-    "meetingDate": "2022-11-15T06:30:00.000Z",
+    "meetingDate": "2022-11-15T06:00:00.000Z",
     "month": 11,
     "year": 2022,
     "coverUrl": "https://covers.openlibrary.org/b/id/8474037-M.jpg"
@@ -363,10 +363,10 @@
     "proposer": "Jenny",
     "title": "The Fish",
     "author": "Lloyd Jones",
-    "meetingDate": "2022-12-20T06:30:00.000Z",
+    "meetingDate": "2022-12-20T06:00:00.000Z",
     "month": 12,
     "year": 2022,
-    "coverUrl": "https://books.google.com/books/content?id=d6NgEAAAQBAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api"
+    "coverUrl": "https://storage.googleapis.com/circlesoft/document/photos/003/699/372/large_9780143776895-1.jpg?1718166826"
   },
   {
     "id": "88abc7c62280",
@@ -374,7 +374,7 @@
     "title": "Max Havelaar",
     "author": "Multatuli",
     "isbn": "9781015436077",
-    "meetingDate": "2023-01-17T06:30:00.000Z",
+    "meetingDate": "2023-01-17T06:00:00.000Z",
     "month": 1,
     "year": 2023,
     "coverUrl": "https://covers.openlibrary.org/b/id/4270871-M.jpg"
@@ -385,7 +385,7 @@
     "title": "The Sea",
     "author": "John Banville",
     "isbn": "9780330442732",
-    "meetingDate": "2023-02-21T06:30:00.000Z",
+    "meetingDate": "2023-02-21T06:00:00.000Z",
     "month": 2,
     "year": 2023,
     "coverUrl": "https://covers.openlibrary.org/b/id/197928-M.jpg"
@@ -396,7 +396,7 @@
     "title": "The Diamond Eye",
     "author": "Kate Quinn",
     "isbn": "9780062943521",
-    "meetingDate": "2023-03-21T06:30:00.000Z",
+    "meetingDate": "2023-03-21T06:00:00.000Z",
     "month": 3,
     "year": 2023,
     "coverUrl": "https://covers.openlibrary.org/b/id/12709798-M.jpg"
@@ -407,7 +407,7 @@
     "title": "The Outsider",
     "author": "Fredrick Forsyth",
     "isbn": "9781473525863",
-    "meetingDate": "2023-04-18T07:30:00.000Z",
+    "meetingDate": "2023-04-18T07:00:00.000Z",
     "month": 4,
     "year": 2023,
     "coverUrl": "https://covers.openlibrary.org/b/id/10993501-M.jpg"
@@ -418,7 +418,7 @@
     "title": "The Alchemist",
     "author": "Paulo Coelho",
     "isbn": "9780007423200",
-    "meetingDate": "2023-05-16T07:30:00.000Z",
+    "meetingDate": "2023-05-16T07:00:00.000Z",
     "month": 5,
     "year": 2023,
     "coverUrl": "https://covers.openlibrary.org/b/id/11556106-M.jpg"
@@ -429,7 +429,7 @@
     "title": "Demon Copperhead",
     "author": "Barbara Kingsolver",
     "isbn": "9780063251984",
-    "meetingDate": "2023-06-20T07:30:00.000Z",
+    "meetingDate": "2023-06-20T07:00:00.000Z",
     "month": 6,
     "year": 2023,
     "coverUrl": "https://covers.openlibrary.org/b/id/13141227-M.jpg"
@@ -440,7 +440,7 @@
     "title": "Birnam Wood",
     "author": "Eleanor Catton",
     "isbn": "9780374110338",
-    "meetingDate": "2023-07-18T07:30:00.000Z",
+    "meetingDate": "2023-07-18T07:00:00.000Z",
     "month": 7,
     "year": 2023,
     "coverUrl": "https://covers.openlibrary.org/b/id/13328050-M.jpg"
@@ -450,7 +450,7 @@
     "proposer": "Chris",
     "title": "The Nickel Boys",
     "author": "Colston Whitehead",
-    "meetingDate": "2023-08-15T07:30:00.000Z",
+    "meetingDate": "2023-08-15T07:00:00.000Z",
     "month": 8,
     "year": 2023,
     "coverUrl": "https://storage.googleapis.com/circlesoft/document/photos/003/946/977/homepage_9780708899427.jpg?1766714956"
@@ -461,7 +461,7 @@
     "title": "Madhouse at the end of the Earth",
     "author": "Julian Sancton",
     "isbn": "9781984824332",
-    "meetingDate": "2023-09-19T07:30:00.000Z",
+    "meetingDate": "2023-09-19T07:00:00.000Z",
     "month": 9,
     "year": 2023,
     "coverUrl": "https://covers.openlibrary.org/b/id/10512250-M.jpg"
@@ -472,7 +472,7 @@
     "title": "Still Life",
     "author": "Sarah Winman",
     "isbn": "9780008283360",
-    "meetingDate": "2023-10-17T06:30:00.000Z",
+    "meetingDate": "2023-10-17T06:00:00.000Z",
     "month": 10,
     "year": 2023,
     "coverUrl": "https://covers.openlibrary.org/b/id/12324271-M.jpg"
@@ -483,7 +483,7 @@
     "title": "Borges and Me",
     "author": "Jay Parini",
     "isbn": "9781984899491",
-    "meetingDate": "2023-11-21T06:30:00.000Z",
+    "meetingDate": "2023-11-21T06:00:00.000Z",
     "month": 11,
     "year": 2023,
     "coverUrl": "https://covers.openlibrary.org/b/id/14759425-M.jpg"
@@ -494,7 +494,7 @@
     "title": "Poor People With Money",
     "author": "Dominic Hoey",
     "isbn": "9780143779865",
-    "meetingDate": "2023-12-19T06:30:00.000Z",
+    "meetingDate": "2023-12-19T06:00:00.000Z",
     "month": 12,
     "year": 2023,
     "coverUrl": "https://books.google.com/books/content?id=6l56EAAAQBAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api"
@@ -505,7 +505,7 @@
     "title": "I Am Homeless If this Is Not My Home",
     "author": "Lorrie Moore",
     "isbn": "9780307740878",
-    "meetingDate": "2024-01-16T06:30:00.000Z",
+    "meetingDate": "2024-01-16T06:00:00.000Z",
     "month": 1,
     "year": 2024,
     "coverUrl": "https://covers.openlibrary.org/b/id/13468942-M.jpg"
@@ -516,7 +516,7 @@
     "title": "Prophet Song",
     "author": "Paul Lynch",
     "isbn": "9780802163011",
-    "meetingDate": "2024-02-20T06:30:00.000Z",
+    "meetingDate": "2024-02-20T06:00:00.000Z",
     "month": 2,
     "year": 2024,
     "coverUrl": "https://covers.openlibrary.org/b/id/14825862-M.jpg"
@@ -526,7 +526,7 @@
     "proposer": "Jackie",
     "title": "The Axeman's Carnival",
     "author": "Catherine Chidgey",
-    "meetingDate": "2024-03-19T06:30:00.000Z",
+    "meetingDate": "2024-03-19T06:00:00.000Z",
     "month": 3,
     "year": 2024,
     "coverUrl": "https://books.google.com/books/content?id=h62eEAAAQBAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api"
@@ -537,7 +537,7 @@
     "title": "Empire Of Pain",
     "author": "Patrick Radden-Keefe",
     "isbn": "9788417339739",
-    "meetingDate": "2024-04-16T07:30:00.000Z",
+    "meetingDate": "2024-04-16T07:00:00.000Z",
     "month": 4,
     "year": 2024,
     "coverUrl": "https://covers.openlibrary.org/b/id/10678221-M.jpg"
@@ -548,7 +548,7 @@
     "title": "Shuggie Bain",
     "author": "Stuart, Douglas",
     "isbn": "9789046827574",
-    "meetingDate": "2024-05-21T07:30:00.000Z",
+    "meetingDate": "2024-05-21T07:00:00.000Z",
     "month": 5,
     "year": 2024,
     "coverUrl": "https://covers.openlibrary.org/b/id/9271540-M.jpg"
@@ -558,7 +558,7 @@
     "proposer": "Bryan",
     "title": "The Bee Sting",
     "author": "Paul Murray.",
-    "meetingDate": "2024-06-18T07:30:00.000Z",
+    "meetingDate": "2024-06-18T07:00:00.000Z",
     "month": 6,
     "year": 2024,
     "coverUrl": "https://books.google.com/books/content?id=KMFhzwEACAAJ&printsec=frontcover&img=1&zoom=2&source=gbs_api"
@@ -568,7 +568,7 @@
     "proposer": "Steve",
     "title": "Mr Wilder and me",
     "author": "Johnathon Coe",
-    "meetingDate": "2024-07-16T07:30:00.000Z",
+    "meetingDate": "2024-07-16T07:00:00.000Z",
     "month": 7,
     "year": 2024,
     "coverUrl": "https://storage.googleapis.com/circlesoft/document/photos/003/610/985/homepage_temp_img.jpg20220320-1-id5uyo?1718130795"
@@ -579,7 +579,7 @@
     "title": "Shrines of Gaiety",
     "author": "Kate Atkinson",
     "isbn": "9780593634097",
-    "meetingDate": "2024-08-20T07:30:00.000Z",
+    "meetingDate": "2024-08-20T07:00:00.000Z",
     "month": 8,
     "year": 2024,
     "coverUrl": "https://covers.openlibrary.org/b/id/13301689-M.jpg"
@@ -589,8 +589,8 @@
     "proposer": "Jenny",
     "title": "Midnight's Children",
     "author": "Salman Rushdie",
-    "isbn": "9781409028536",
-    "meetingDate": "2024-09-17T07:30:00.000Z",
+    "isbn": "9780394514703",
+    "meetingDate": "2024-09-17T07:00:00.000Z",
     "month": 9,
     "year": 2024,
     "coverUrl": "https://covers.openlibrary.org/b/id/8346713-M.jpg"
@@ -601,7 +601,7 @@
     "title": "Small Things Like These",
     "author": "Claire Keegan",
     "isbn": "9780802158758",
-    "meetingDate": "2024-10-15T06:30:00.000Z",
+    "meetingDate": "2024-10-15T06:00:00.000Z",
     "month": 10,
     "year": 2024,
     "coverUrl": "https://covers.openlibrary.org/b/id/10507091-M.jpg"
@@ -611,7 +611,7 @@
     "proposer": "Jenny",
     "title": "The Grand Glacier Hotel",
     "author": "Lawrence Fearnley",
-    "meetingDate": "2024-11-19T06:30:00.000Z",
+    "meetingDate": "2024-11-19T06:00:00.000Z",
     "month": 11,
     "year": 2024,
     "coverUrl": "https://storage.googleapis.com/circlesoft/document/photos/004/121/968/large_9781776950638.jpg?1737673272"
@@ -622,7 +622,7 @@
     "title": "Time Shelter",
     "author": "Georgi Gospodinov",
     "isbn": "9781474623063",
-    "meetingDate": "2024-12-17T06:30:00.000Z",
+    "meetingDate": "2024-12-17T06:00:00.000Z",
     "month": 12,
     "year": 2024,
     "coverUrl": "https://covers.openlibrary.org/b/id/13125096-M.jpg"
@@ -633,7 +633,7 @@
     "title": "Orbital",
     "author": "Samantha Harvey",
     "isbn": "9781529922936",
-    "meetingDate": "2025-01-21T06:30:00.000Z",
+    "meetingDate": "2025-01-21T06:00:00.000Z",
     "month": 1,
     "year": 2025,
     "coverUrl": "https://covers.openlibrary.org/b/id/14541972-M.jpg"
@@ -644,7 +644,7 @@
     "title": "Question 7",
     "author": "Richard Flanagan",
     "isbn": "9781784745677",
-    "meetingDate": "2025-02-18T06:30:00.000Z",
+    "meetingDate": "2025-02-18T06:00:00.000Z",
     "month": 2,
     "year": 2025,
     "coverUrl": "https://books.google.com/books/content?id=LxFaEQAAQBAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api"
@@ -655,7 +655,7 @@
     "title": "The Last Quarter of the Moon",
     "author": "Chi Zijian",
     "isbn": "9780099555650",
-    "meetingDate": "2025-03-18T06:30:00.000Z",
+    "meetingDate": "2025-03-18T06:00:00.000Z",
     "month": 3,
     "year": 2025,
     "coverUrl": "https://covers.openlibrary.org/b/id/8996415-M.jpg"
@@ -666,7 +666,7 @@
     "title": "Nice Work",
     "author": "David Lodge",
     "isbn": "9780140119206",
-    "meetingDate": "2025-04-15T07:30:00.000Z",
+    "meetingDate": "2025-04-15T07:00:00.000Z",
     "month": 4,
     "year": 2025,
     "coverUrl": "https://covers.openlibrary.org/b/id/4067603-M.jpg"
@@ -677,7 +677,7 @@
     "title": "The Dutch House",
     "author": "Ann Patchett",
     "isbn": "9780062963673",
-    "meetingDate": "2025-05-20T07:30:00.000Z",
+    "meetingDate": "2025-05-20T07:00:00.000Z",
     "month": 5,
     "year": 2025,
     "coverUrl": "https://covers.openlibrary.org/b/id/8788823-M.jpg"
@@ -688,7 +688,7 @@
     "title": "Humankind: A Hopeful History",
     "author": "Rutger Bregman",
     "isbn": "9789123979851",
-    "meetingDate": "2025-06-17T07:30:00.000Z",
+    "meetingDate": "2025-06-17T07:00:00.000Z",
     "month": 6,
     "year": 2025,
     "coverUrl": "https://covers.openlibrary.org/b/id/11482298-M.jpg"
@@ -699,7 +699,7 @@
     "title": "My Name Is Why",
     "author": "Lemn Sissay",
     "isbn": "9781838854645",
-    "meetingDate": "2025-07-15T07:30:00.000Z",
+    "meetingDate": "2025-07-15T07:00:00.000Z",
     "month": 7,
     "year": 2025,
     "coverUrl": "https://covers.openlibrary.org/b/id/10205356-M.jpg"
@@ -710,7 +710,7 @@
     "title": "Enlightenment Now",
     "author": "Steven Pinker",
     "isbn": "9780525529798",
-    "meetingDate": "2025-08-19T07:30:00.000Z",
+    "meetingDate": "2025-08-19T07:00:00.000Z",
     "month": 8,
     "year": 2025,
     "coverUrl": "https://covers.openlibrary.org/b/id/8147013-M.jpg"
@@ -721,7 +721,7 @@
     "title": "Norwegian Wood",
     "author": "Lars Mytting",
     "isbn": "9781419717987",
-    "meetingDate": "2025-09-16T07:30:00.000Z",
+    "meetingDate": "2025-09-16T07:00:00.000Z",
     "month": 9,
     "year": 2025,
     "coverUrl": "https://covers.openlibrary.org/b/id/12417231-M.jpg"
@@ -732,7 +732,7 @@
     "title": "Apeirogon",
     "author": "Colum McCann",
     "isbn": "9781526624499",
-    "meetingDate": "2025-10-21T06:30:00.000Z",
+    "meetingDate": "2025-10-21T06:00:00.000Z",
     "month": 10,
     "year": 2025,
     "coverUrl": "https://covers.openlibrary.org/b/id/12389526-M.jpg"
@@ -743,7 +743,7 @@
     "title": "Wulf",
     "author": "Hamish Clayton",
     "isbn": "9781459621961",
-    "meetingDate": "2025-11-18T06:30:00.000Z",
+    "meetingDate": "2025-11-18T06:00:00.000Z",
     "month": 11,
     "year": 2025,
     "coverUrl": "https://covers.openlibrary.org/b/id/14536883-M.jpg"
@@ -754,7 +754,7 @@
     "title": "Beautiful Family",
     "author": "Jennifer Trevelyan",
     "isbn": "9798217161829",
-    "meetingDate": "2025-12-16T06:30:00.000Z",
+    "meetingDate": "2025-12-16T06:00:00.000Z",
     "month": 12,
     "year": 2025,
     "coverUrl": "https://covers.openlibrary.org/b/id/15109235-M.jpg"
@@ -765,7 +765,7 @@
     "title": "Shark Heart",
     "author": "Emily Habeck",
     "isbn": "9781668006504",
-    "meetingDate": "2026-02-17T06:30:00.000Z",
+    "meetingDate": "2026-02-17T06:00:00.000Z",
     "month": 2,
     "year": 2026,
     "coverUrl": "https://covers.openlibrary.org/b/id/14406690-M.jpg"
@@ -776,7 +776,7 @@
     "title": "We Are All Birds of Uganda",
     "author": "Hafsa Zayyan",
     "isbn": "9781529118667",
-    "meetingDate": "2026-03-17T06:30:00.000Z",
+    "meetingDate": "2026-03-17T06:00:00.000Z",
     "month": 3,
     "year": 2026,
     "coverUrl": "https://covers.openlibrary.org/b/id/10913531-M.jpg"
@@ -786,7 +786,7 @@
     "proposer": "Michael F",
     "title": "The Disenchanted Soldier",
     "author": "Vicky Adin",
-    "meetingDate": "2026-04-21T07:30:00.000Z",
+    "meetingDate": "2026-04-21T07:00:00.000Z",
     "month": 4,
     "year": 2026
   },
@@ -796,7 +796,7 @@
     "title": "Hamnet",
     "author": "Maggie O'Farrell",
     "isbn": "9781432892494",
-    "meetingDate": "2026-07-21T07:30:00.000Z",
+    "meetingDate": "2026-07-21T07:00:00.000Z",
     "month": 7,
     "year": 2026,
     "coverUrl": "https://covers.openlibrary.org/b/id/10306590-M.jpg"
@@ -807,10 +807,10 @@
     "title": "Book of Guilt",
     "author": "Catherine Chidgey",
     "isbn": "9781761349393",
-    "meetingDate": "2027-02-16T06:30:00.000Z",
+    "meetingDate": "2027-02-16T06:00:00.000Z",
     "month": 2,
     "year": 2027,
-    "coverUrl": "https://books.google.com/books/content?id=WZtiEQAAQBAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api"
+    "coverUrl": "https://storage.googleapis.com/circlesoft/document/photos/004/261/635/homepage_9781776922246.jpg?1761351739"
   },
   {
     "id": "16cb0cf52a85",
@@ -841,7 +841,7 @@
     "proposer": "",
     "title": "Mr Pip",
     "author": "Lloyd Jones",
-    "coverUrl": "https://books.google.com/books/content?id=ZK-kPwAACAAJ&printsec=frontcover&img=1&zoom=2&source=gbs_api"
+    "coverUrl": "https://storage.googleapis.com/circlesoft/document/photos/002/507/482/large_9781849763820.jpg?1716995483"
   },
   {
     "id": "148da6e4d325",
@@ -872,7 +872,7 @@
     "proposer": "",
     "title": "Pope Joan",
     "author": "Donna Woolfolk Cross",
-    "isbn": "9788498382648",
+    "isbn": "9789861850986",
     "coverUrl": "https://covers.openlibrary.org/b/id/1023793-M.jpg"
   },
   {
@@ -928,7 +928,7 @@
     "proposer": "",
     "title": "My Name Was Judas",
     "author": "C.K. Stead",
-    "coverUrl": "https://books.google.com/books/content?id=kfdMrNcT2JoC&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api"
+    "coverUrl": "https://storage.googleapis.com/circlesoft/document/photos/004/426/019/homepage_9780099503637.jpg?1750121683"
   },
   {
     "id": "c80a23b5afe5",
@@ -1072,8 +1072,7 @@
     "id": "9239c2aeaca7",
     "proposer": "",
     "title": "A Very Private Gentleman : A Novel",
-    "author": "Martin Booth",
-    "coverUrl": "https://books.google.com/books/content?id=ZPxm4yJPs3YC&printsec=frontcover&img=1&zoom=2&source=gbs_api"
+    "author": "Martin Booth"
   },
   {
     "id": "ee1b822c3d32",
@@ -1087,7 +1086,7 @@
     "proposer": "",
     "title": "Flight Behaviour",
     "author": "Barbara Kingsolver",
-    "coverUrl": "https://books.google.com/books/content?id=mc1RvgEACAAJ&printsec=frontcover&img=1&zoom=2&source=gbs_api"
+    "coverUrl": "https://storage.googleapis.com/circlesoft/document/photos/004/497/765/homepage_9780571290802.jpg?1769905324"
   },
   {
     "id": "8a938b5024c1",
@@ -1134,7 +1133,7 @@
     "proposer": "",
     "title": "Year of Wonders",
     "author": "Geraldine Brooks",
-    "isbn": "9780783896823",
+    "isbn": "9783442732234",
     "coverUrl": "https://covers.openlibrary.org/b/id/14356892-M.jpg"
   },
   {
@@ -1251,8 +1250,7 @@
     "id": "2215540035d8",
     "proposer": "",
     "title": "The Picture of the Artist as a Young Man",
-    "author": "James Joyce",
-    "coverUrl": "https://books.google.com/books/content?id=4NJ_PwAACAAJ&printsec=frontcover&img=1&zoom=2&source=gbs_api"
+    "author": "James Joyce"
   },
   {
     "id": "fca82b2faa7c",
