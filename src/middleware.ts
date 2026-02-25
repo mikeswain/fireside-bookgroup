@@ -22,9 +22,22 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const email =
-    request.headers.get("Cf-Access-Authenticated-User-Email") ??
-    process.env.DEV_USER_EMAIL;
+  // Check for authenticated user: CF Access header, CF JWT cookie, or dev env var
+  let email = request.headers.get("Cf-Access-Authenticated-User-Email");
+  if (!email) {
+    const cfCookie = request.cookies.get("CF_Authorization")?.value;
+    if (cfCookie) {
+      try {
+        const payload = JSON.parse(atob(cfCookie.split(".")[1]));
+        email = payload.email ?? null;
+      } catch {
+        // malformed JWT
+      }
+    }
+  }
+  if (!email) {
+    email = process.env.DEV_USER_EMAIL ?? null;
+  }
 
   if (!email) {
     return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
