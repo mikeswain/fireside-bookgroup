@@ -1,7 +1,8 @@
 export const runtime = "edge";
 
 import { fetchJsonFile } from "@/lib/github";
-import type { Book } from "@/lib/types";
+import type { Book, Member } from "@/lib/types";
+import { buildNameAbbreviations, abbreviateProposer } from "@/lib/types";
 import { generateIcsCalendar } from "ts-ics";
 
 function getToken(): string {
@@ -12,7 +13,13 @@ function getToken(): string {
 
 export async function GET() {
   const now = new Date().getTime();
-  const { data: books } = await fetchJsonFile<Book[]>(getToken(), "data/books.json");
+  const token = getToken();
+  const [{ data: books }, { data: members }] = await Promise.all([
+    fetchJsonFile<Book[]>(token, "data/books.json"),
+    fetchJsonFile<Member[]>(token, "data/members.json"),
+  ]);
+  const abbrevs = buildNameAbbreviations(members);
+
   const ics = generateIcsCalendar({
     version: "2.0",
     prodId: "-//Puhoi Fireside Bookgroup//EN",
@@ -26,7 +33,7 @@ export async function GET() {
         stamp: { date },
         start: { date },
         end: { date: new Date(date.getTime() + 3 * 60 * 60 * 1000) },
-        summary: `Bookgroup: ${book.title} by ${book.author}, proposer ${book.proposer}`,
+        summary: `Bookgroup: ${book.title} by ${book.author}, proposer ${abbreviateProposer(book.proposer, abbrevs)}`,
       })),
   });
   return new Response(ics, {
