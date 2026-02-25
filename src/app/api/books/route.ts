@@ -4,7 +4,7 @@ import { findCover } from "@/lib/covers";
 import { requireAdmin } from "@/lib/auth";
 import type { Book } from "@/lib/types";
 
-export const runtime = "nodejs";
+export const runtime = "edge";
 function getToken(): string {
   const token = process.env.GITHUB_TOKEN;
   if (!token) throw new Error("GITHUB_TOKEN not configured");

@@ -3,7 +3,7 @@ import { fetchJsonFile, commitJsonFile } from "@/lib/github";
 import { requireAdmin } from "@/lib/auth";
 import type { Member } from "@/lib/types";
 
-export const runtime = "nodejs";
+export const runtime = "edge";
 
 const MEMBERS_PATH = "data/members.json";
 

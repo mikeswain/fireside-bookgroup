@@ -1,22 +1,24 @@
-import { readFileSync } from "fs";
-import { join } from "path";
 import { NextRequest, NextResponse } from "next/server";
 import { requireMember } from "@/lib/auth";
+import { fetchJsonFile } from "@/lib/github";
 import type { Book, Member } from "@/lib/types";
 
-export const runtime = "nodejs";
+export const runtime = "edge";
+
+function getToken(): string {
+  const token = process.env.GITHUB_TOKEN;
+  if (!token) throw new Error("GITHUB_TOKEN not configured");
+  return token;
+}
 
 export async function GET(request: NextRequest) {
   try {
     const result = await requireMember(request);
     if (result instanceof NextResponse) return result;
 
-    const members: Member[] = JSON.parse(
-      readFileSync(join(process.cwd(), "data", "members.json"), "utf-8"),
-    );
-    const books: Book[] = JSON.parse(
-      readFileSync(join(process.cwd(), "data", "books.json"), "utf-8"),
-    );
+    const token = getToken();
+    const { data: members } = await fetchJsonFile<Member[]>(token, "data/members.json");
+    const { data: books } = await fetchJsonFile<Book[]>(token, "data/books.json");
 
     const recipients = members.filter((m) => m.notifiable && m.email);
 
