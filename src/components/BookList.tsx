@@ -27,7 +27,7 @@ function formatDate(meetingDate: string) {
 }
 
 /** Split text around case-insensitive matches, wrapping matches in a highlight span. */
-function Highlight({ text, query }: { text: string; query: string }): ReactNode {
+function Highlight({ text, query }: { text: string; query: string; }): ReactNode {
   if (!query) return text;
   const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "gi");
   const parts = text.split(regex);
@@ -47,7 +47,7 @@ function bookMatchesQuery(book: Book, query: string): boolean {
     .some((field) => field!.toLowerCase().includes(q));
 }
 
-function FeaturedCard({ book, query }: { book: Book; query: string }) {
+function FeaturedCard({ book, query }: { book: Book; query: string; }) {
   const { formatted, time } = formatDate(book.meetingDate!);
 
   return (
@@ -99,7 +99,7 @@ function FeaturedCard({ book, query }: { book: Book; query: string }) {
   );
 }
 
-function BookCard({ book, query }: { book: Book; query: string }) {
+function BookCard({ book, query }: { book: Book; query: string; }) {
   const dateInfo = book.meetingDate ? formatDate(book.meetingDate) : null;
 
   return (
@@ -195,8 +195,29 @@ export default function BookList({ upcoming, past, undated }: BookListProps) {
       </div>
 
       <section>
-        <h2 className="mb-4 border-b border-amber-300/50 pb-2 text-xl font-bold text-amber-900">
+        <h2 className="flex justify-between items-baseline mb-4 border-b border-amber-300/50 pb-2 text-xl font-bold text-amber-900">
           Upcoming Books
+          <a
+            href="webcal:/events"
+            className="mb-8 inline-flex items-center gap-1.5 text-sm font-medium text-amber-700 hover:text-amber-900"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="h-4 w-4"
+            >
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
+            <span className="md:inline text-xs">Add to your calendar</span>
+          </a>
         </h2>
         {filteredUpcoming.length === 0 ? (
           <p className="text-sm text-amber-600">
@@ -214,37 +235,41 @@ export default function BookList({ upcoming, past, undated }: BookListProps) {
         )}
       </section>
 
-      {filteredPast.length > 0 && (
-        <details open={!!query}>
-          <summary className="cursor-pointer border-b border-amber-300/50 pb-2 text-xl font-bold text-amber-900">
-            Past Books
-            <span className="ml-2 text-sm font-normal text-amber-600">
-              ({filteredPast.length})
-            </span>
-          </summary>
-          <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            {filteredPast.map((b) => (
-              <BookCard key={b.id} book={b} query={query} />
-            ))}
-          </div>
-        </details>
-      )}
+      {
+        filteredPast.length > 0 && (
+          <details open={!!query}>
+            <summary className="cursor-pointer border-b border-amber-300/50 pb-2 text-xl font-bold text-amber-900">
+              Past Books
+              <span className="ml-2 text-sm font-normal text-amber-600">
+                ({filteredPast.length})
+              </span>
+            </summary>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              {filteredPast.map((b) => (
+                <BookCard key={b.id} book={b} query={query} />
+              ))}
+            </div>
+          </details>
+        )
+      }
 
-      {filteredUndated.length > 0 && (
-        <details open={!!query}>
-          <summary className="cursor-pointer border-b border-amber-300/50 pb-2 text-xl font-bold text-amber-900">
-            We Read These But Can&apos;t Remember When
-            <span className="ml-2 text-sm font-normal text-amber-600">
-              ({filteredUndated.length})
-            </span>
-          </summary>
-          <div className="mt-4 grid gap-4 sm:grid-cols-2">
-            {filteredUndated.map((b) => (
-              <BookCard key={b.id} book={b} query={query} />
-            ))}
-          </div>
-        </details>
-      )}
-    </div>
+      {
+        filteredUndated.length > 0 && (
+          <details open={!!query}>
+            <summary className="cursor-pointer border-b border-amber-300/50 pb-2 text-xl font-bold text-amber-900">
+              We Read These But Can&apos;t Remember When
+              <span className="ml-2 text-sm font-normal text-amber-600">
+                ({filteredUndated.length})
+              </span>
+            </summary>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
+              {filteredUndated.map((b) => (
+                <BookCard key={b.id} book={b} query={query} />
+              ))}
+            </div>
+          </details>
+        )
+      }
+    </div >
   );
 }

@@ -67,39 +67,44 @@ export default function Home() {
       </div>
       <section className="mb-10 rounded-xl border border-amber-200/60 bg-amber-50/80 p-6 backdrop-blur-sm">
         <h2 className="mb-3 text-xl font-bold text-amber-900">About Us</h2>
-        <div className="space-y-3 text-sm leading-relaxed text-amber-800/90">
-          <p>
-            We&apos;re a friendly bunch of book lovers who meet on the third
-            Tuesday of each month at 7:30pm in the{" "}
-            <a
-              href="https://en.wikipedia.org/wiki/Puhoi"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-amber-900 underline decoration-amber-300 underline-offset-2 hover:decoration-amber-500"
-            >
-              Puhoi Town Library
-            </a>{" "}
-            &mdash; quite possibly New Zealand&apos;s most charming (and
-            smallest) library. Built in 1913, it&apos;s survived floods, wars,
-            and the occasional vigorous literary debate.
-          </p>
-          <p>
-            Each month, one of us picks a book for the group to read. Choices
-            range from Booker Prize winners to books nobody else has heard of
-            (we&apos;re looking at you, <em>Max Havelaar</em>). There are no
-            wrong answers, though turning up without having read the book is
-            frowned upon &mdash; unless you bring good wine, in which case
-            all is forgiven.
-          </p>
-          <p>
-            We&apos;ve been going for more years than we care to count and
-            have worked our way through well over a hundred books together.
-            New members are always welcome &mdash; just bring a love of
-            reading and a willingness to have your taste gently questioned.
-          </p>
-        </div>
+        {/* Small screens: collapsible via <details>; large screens: always visible */}
+        <details className="sm:hidden text-sm leading-relaxed text-amber-800/90">
+          <summary className="cursor-pointer font-medium text-amber-700 hover:text-amber-900">
+            More about us&hellip;
+          </summary>
+          <div className="mt-3 space-y-3">
+            <p>
+              We&apos;re a friendly bunch of book lovers who meet on the third
+              Tuesday of each month at 7:30pm in the{" "}
+              <a
+                href="https://en.wikipedia.org/wiki/Puhoi"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-amber-900 underline decoration-amber-300 underline-offset-2 hover:decoration-amber-500"
+              >
+                Puhoi Town Library
+              </a>{" "}
+              &mdash; quite possibly New Zealand&apos;s most charming (and
+              smallest) library. Built in 1913, it&apos;s survived floods, wars,
+              and the occasional vigorous literary debate.
+            </p>
+            <p>
+              Each month, one of us picks a book for the group to read. Choices
+              range from Booker Prize winners to books nobody else has heard of
+              (we&apos;re looking at you, <em>Max Havelaar</em>). There are no
+              wrong answers, though turning up without having read the book is
+              frowned upon &mdash; unless you bring good wine, in which case
+              all is forgiven.
+            </p>
+            <p>
+              We&apos;ve been going for more years than we care to count and
+              have worked our way through well over a hundred books together.
+              New members are always welcome &mdash; just bring a love of
+              reading and a willingness to have your taste gently questioned.
+            </p>
+          </div>
+        </details>
       </section>
-      <a href="webcal:/events" >Add to your calendar</a>
       <BookList upcoming={upcoming} past={past} undated={undated} />
     </main>
   );
