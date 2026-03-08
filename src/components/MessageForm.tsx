@@ -23,7 +23,6 @@ export default function MessageForm() {
   const [removedEmails, setRemovedEmails] = useState<Set<string>>(new Set());
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
-  const [attachedBook, setAttachedBook] = useState<Book | null>(null);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState<number | null>(null);
 
@@ -109,7 +108,6 @@ export default function MessageForm() {
     if (dateLine) lines.push(dateLine);
 
     setBody(lines.join("\n"));
-    setAttachedBook(book);
     setSent(null);
   };
 
@@ -136,7 +134,6 @@ export default function MessageForm() {
           subject: subject.trim(),
           body: body.trim(),
           recipientEmails: activeRecipients.map((m) => m.email!),
-          ...(attachedBook && { book: attachedBook }),
         }),
       });
       if (!res.ok) {

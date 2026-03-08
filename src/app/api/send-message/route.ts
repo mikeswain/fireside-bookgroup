@@ -24,11 +24,12 @@ function escapeHtml(s: string): string {
   return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
+const BOOKS_PATH = "data/books.json";
+
 interface SendPayload {
   subject: string;
   body: string;
   recipientEmails: string[];
-  book?: Book;
 }
 
 function bookSearchUrl(book: Book): string {
@@ -68,7 +69,7 @@ export async function POST(request: NextRequest) {
     if (result instanceof NextResponse) return result;
     const sender = result;
 
-    const { subject, body, recipientEmails, book } = (await request.json()) as SendPayload;
+    const { subject, body, recipientEmails } = (await request.json()) as SendPayload;
 
     if (!subject?.trim() || !body?.trim()) {
       return NextResponse.json({ error: "Subject and body are required" }, { status: 400 });
@@ -94,7 +95,12 @@ export async function POST(request: NextRequest) {
     const textBody = body.trim();
     const textFooter = `\n\n— Sent by ${senderName} via Puhoi Fireside Bookgroup.\nWe are a small but vibrant group of readers in Puhoi, New Zealand, website https://bookgroup.hiko.co.nz.\nIf you don't want to be contacted, think this has been sent in error, or maliciously, please email the webmaster mike@hiko.co.nz`;
 
-    const bookCard = book ? renderBookCardHtml(book) : "";
+    const { data: books } = await fetchJsonFile<Book[]>(getToken(), BOOKS_PATH);
+    const now = new Date();
+    const nextBook = books
+      .filter((b) => b.meetingDate && new Date(b.meetingDate) >= now)
+      .sort((a, b) => new Date(a.meetingDate!).getTime() - new Date(b.meetingDate!).getTime())[0] ?? null;
+    const bookCard = nextBook ? renderBookCardHtml(nextBook) : "";
     const htmlBody = textBody.split("\n").map((line) => `<p>${escapeHtml(line) || "&nbsp;"}</p>`).join("\n") + bookCard;
     const htmlFooter = `<hr style="margin:24px 0;border:none;border-top:1px solid #ddd">
 <p style="font-size:13px;color:#666">— Sent by ${escapeHtml(senderName)} via <a href="https://bookgroup.hiko.co.nz">Puhoi Fireside Bookgroup</a>.<br>
