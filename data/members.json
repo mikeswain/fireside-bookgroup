@@ -72,7 +72,8 @@
     "givenName": "Jenny",
     "familyName": "",
     "email": "jenny@hiko.co.nz",
-    "notifiable": false
+    "isAdmin": false,
+    "notifiable": true
   },
   {
     "givenName": "Joe",
