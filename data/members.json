@@ -136,7 +136,7 @@
     "familyName": "Swain",
     "email": "test@hiko.co.nz",
     "isAdmin": false,
-    "notifiable": true
+    "notifiable": false
   },
   {
     "givenName": "Val",
