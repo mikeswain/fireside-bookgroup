@@ -20,6 +20,10 @@ function getResendKey(): string {
   return key;
 }
 
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
 interface SendPayload {
   subject: string;
   body: string;
@@ -55,10 +59,14 @@ export async function POST(request: NextRequest) {
     if (!fromAddress) throw new Error("EMAIL_FROM not configured");
 
     const senderName = displayName(sender);
-    const footer = `\n\n— Sent by ${senderName} via Puhoi Fireside Bookgroup.
-        We are a small but vibrant group of readers in Puhoi, New Zealand, website https://bookgroup.hiko.co.nz.
-        If you don't want to be contacted, think this has been sent in error, or maliciously, please email the webmaster mike@hiko.co.nz\n        
-        `;
+    const textBody = body.trim();
+    const textFooter = `\n\n— Sent by ${senderName} via Puhoi Fireside Bookgroup.\nWe are a small but vibrant group of readers in Puhoi, New Zealand, website https://bookgroup.hiko.co.nz.\nIf you don't want to be contacted, think this has been sent in error, or maliciously, please email the webmaster mike@hiko.co.nz`;
+
+    const htmlBody = textBody.split("\n").map((line) => `<p>${escapeHtml(line) || "&nbsp;"}</p>`).join("\n");
+    const htmlFooter = `<hr style="margin:24px 0;border:none;border-top:1px solid #ddd">
+<p style="font-size:13px;color:#666">— Sent by ${escapeHtml(senderName)} via <a href="https://bookgroup.hiko.co.nz">Puhoi Fireside Bookgroup</a>.<br>
+We are a small but vibrant group of readers in Puhoi, New Zealand.<br>
+If you don't want to be contacted, think this has been sent in error, or maliciously, please email the webmaster <a href="mailto:mike@hiko.co.nz">mike@hiko.co.nz</a></p>`;
 
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -71,8 +79,8 @@ export async function POST(request: NextRequest) {
         to: recipientEmails,
         reply_to: sender.email,
         subject: subject.trim(),
-        text: body.trim() + footer
-
+        text: textBody + textFooter,
+        html: htmlBody + htmlFooter,
       }),
     });
 
