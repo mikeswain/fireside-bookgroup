@@ -84,7 +84,8 @@
     "givenName": "Kate",
     "familyName": "",
     "email": "kate.shevland@gmail.com",
-    "notifiable": false
+    "isAdmin": false,
+    "notifiable": true
   },
   {
     "givenName": "Kathryn",
