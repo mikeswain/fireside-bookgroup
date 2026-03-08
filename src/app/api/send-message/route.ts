@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: `${senderName} a member of Fireside Bookgroup`,
+        from: fromAddress,
         to: recipientEmails,
         reply_to: sender.email,
         subject: subject.trim(),
