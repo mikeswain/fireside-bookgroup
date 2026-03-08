@@ -78,7 +78,8 @@
     "givenName": "Joe",
     "familyName": "",
     "email": "j.a.grixti@gmail.com",
-    "notifiable": false
+    "isAdmin": false,
+    "notifiable": true
   },
   {
     "givenName": "Kate",
