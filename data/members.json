@@ -65,7 +65,8 @@
     "givenName": "Jacki",
     "familyName": "",
     "email": "jacki@rehabwest.co.nz",
-    "notifiable": false
+    "isAdmin": false,
+    "notifiable": true
   },
   {
     "givenName": "Jenny",
