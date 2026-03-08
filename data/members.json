@@ -97,7 +97,8 @@
     "givenName": "Michael",
     "familyName": "Frost",
     "email": "michaelfrost.nz@outlook.com",
-    "notifiable": false
+    "isAdmin": false,
+    "notifiable": true
   },
   {
     "givenName": "Mike",
