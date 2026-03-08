@@ -27,7 +27,8 @@
     "givenName": "Christopher",
     "familyName": "",
     "email": "cruhen@xtra.co.nz",
-    "notifiable": false
+    "isAdmin": false,
+    "notifiable": true
   },
   {
     "givenName": "Clint",
