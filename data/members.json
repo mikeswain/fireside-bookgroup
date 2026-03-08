@@ -92,7 +92,8 @@
     "givenName": "Kathryn",
     "familyName": "",
     "email": "K.E.Rountree@massey.ac.nz",
-    "notifiable": false
+    "isAdmin": false,
+    "notifiable": true
   },
   {
     "givenName": "Michael",
