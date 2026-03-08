@@ -15,7 +15,10 @@ export default function RootLayout({
     <html lang="en">
       <body className="text-amber-950 antialiased">
         {children}
-        <footer className="flex justify-end p-2">&copy; Hiko Software 2026</footer>
+        <footer className="flex items-baseline justify-end gap-2 p-2">
+          &copy; Hiko Software 2026
+          <span className="text-xs text-amber-700/50">{process.env.NEXT_PUBLIC_GIT_COMMIT}</span>
+        </footer>
       </body>
     </html>
   );
