@@ -46,7 +46,8 @@
     "givenName": "Diane",
     "familyName": "",
     "email": "dianenewcombe@hotmail.com",
-    "notifiable": false
+    "isAdmin": false,
+    "notifiable": true
   },
   {
     "givenName": "Gabrielle",
