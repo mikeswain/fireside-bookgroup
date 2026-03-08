@@ -15,7 +15,8 @@
     "givenName": "Bryan",
     "familyName": "",
     "email": "bryan@offbeat.co.nz",
-    "notifiable": false
+    "isAdmin": false,
+    "notifiable": true
   },
   {
     "givenName": "Catherine",
