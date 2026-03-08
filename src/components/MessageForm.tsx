@@ -23,6 +23,7 @@ export default function MessageForm() {
   const [removedEmails, setRemovedEmails] = useState<Set<string>>(new Set());
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
+  const [attachedBook, setAttachedBook] = useState<Book | null>(null);
   const [sending, setSending] = useState(false);
   const [sent, setSent] = useState<number | null>(null);
 
@@ -108,6 +109,7 @@ export default function MessageForm() {
     if (dateLine) lines.push(dateLine);
 
     setBody(lines.join("\n"));
+    setAttachedBook(book);
     setSent(null);
   };
 
@@ -134,6 +136,7 @@ export default function MessageForm() {
           subject: subject.trim(),
           body: body.trim(),
           recipientEmails: activeRecipients.map((m) => m.email!),
+          ...(attachedBook && { book: attachedBook }),
         }),
       });
       if (!res.ok) {
@@ -194,6 +197,24 @@ export default function MessageForm() {
                 removed={removedRecipients}
                 onAdd={handleAdd}
               />
+            )}
+            {activeRecipients.length > 0 && (
+              <button
+                type="button"
+                onClick={() => setRemovedEmails(new Set(data.recipients.map((m) => m.email!)))}
+                className="rounded-full border border-dashed border-amber-400 px-3 py-1 text-xs text-amber-600 hover:bg-amber-100"
+              >
+                Remove all
+              </button>
+            )}
+            {removedRecipients.length > 1 && (
+              <button
+                type="button"
+                onClick={() => setRemovedEmails(new Set())}
+                className="rounded-full border border-dashed border-amber-400 px-3 py-1 text-xs text-amber-600 hover:bg-amber-100"
+              >
+                Add all
+              </button>
             )}
           </div>
         </div>

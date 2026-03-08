@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireMember } from "@/lib/auth";
 import { fetchJsonFile } from "@/lib/github";
 import { displayName } from "@/lib/types";
-import type { Member } from "@/lib/types";
+import type { Book, Member } from "@/lib/types";
 
 export const runtime = "edge";
 
@@ -28,6 +28,38 @@ interface SendPayload {
   subject: string;
   body: string;
   recipientEmails: string[];
+  book?: Book;
+}
+
+function bookSearchUrl(book: Book): string {
+  if (book.isbn) return `https://openlibrary.org/isbn/${book.isbn.replace(/[-\s]/g, "")}`;
+  const q = book.author ? `${book.title} ${book.author}` : book.title;
+  return `https://bookhub.co.nz/catalog/search?utf8=%E2%9C%93&keyword=${encodeURIComponent(q)}&search_type=core%5Ekeyword`;
+}
+
+function renderBookCardHtml(book: Book): string {
+  const url = bookSearchUrl(book);
+  const date = book.meetingDate ? new Date(book.meetingDate) : null;
+  const dateStr = date
+    ? date.toLocaleDateString("en-NZ", { weekday: "long", year: "numeric", month: "long", day: "numeric" })
+    : "";
+  const timeStr = date
+    ? date.toLocaleTimeString("en-NZ", { hour: "2-digit", minute: "2-digit" })
+    : "";
+
+  const cover = book.coverUrl
+    ? `<img src="${escapeHtml(book.coverUrl)}" alt="Cover" style="width:80px;height:112px;object-fit:cover;border-radius:8px;margin-right:16px;float:left">`
+    : "";
+
+  return `<div style="margin:16px 0;padding:16px;border:2px solid #d97706;border-radius:12px;background:#fffbeb;font-family:system-ui,sans-serif;overflow:hidden">
+<p style="margin:0 0 8px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:#d97706">This month&rsquo;s book</p>
+${cover}<div>
+<p style="margin:0;font-size:18px;font-weight:700"><a href="${escapeHtml(url)}" style="color:#78350f;text-decoration:underline">${escapeHtml(book.title)}</a></p>
+${book.author ? `<p style="margin:4px 0 0;font-size:14px;font-style:italic;color:#b45309">${escapeHtml(book.author)}</p>` : ""}
+${dateStr ? `<p style="margin:8px 0 0;font-size:13px;color:#92400e">${escapeHtml(dateStr)} at ${escapeHtml(timeStr)}</p>` : ""}
+${book.proposer ? `<p style="margin:4px 0 0;font-size:13px;color:#92400e">Proposed by <strong style="color:#78350f">${escapeHtml(book.proposer)}</strong></p>` : ""}
+${book.isbn ? `<p style="margin:4px 0 0;font-size:11px;color:#b45309">ISBN: ${escapeHtml(book.isbn)}</p>` : ""}
+</div></div>`;
 }
 
 export async function POST(request: NextRequest) {
@@ -36,7 +68,7 @@ export async function POST(request: NextRequest) {
     if (result instanceof NextResponse) return result;
     const sender = result;
 
-    const { subject, body, recipientEmails } = (await request.json()) as SendPayload;
+    const { subject, body, recipientEmails, book } = (await request.json()) as SendPayload;
 
     if (!subject?.trim() || !body?.trim()) {
       return NextResponse.json({ error: "Subject and body are required" }, { status: 400 });
@@ -62,7 +94,8 @@ export async function POST(request: NextRequest) {
     const textBody = body.trim();
     const textFooter = `\n\n— Sent by ${senderName} via Puhoi Fireside Bookgroup.\nWe are a small but vibrant group of readers in Puhoi, New Zealand, website https://bookgroup.hiko.co.nz.\nIf you don't want to be contacted, think this has been sent in error, or maliciously, please email the webmaster mike@hiko.co.nz`;
 
-    const htmlBody = textBody.split("\n").map((line) => `<p>${escapeHtml(line) || "&nbsp;"}</p>`).join("\n");
+    const bookCard = book ? renderBookCardHtml(book) : "";
+    const htmlBody = textBody.split("\n").map((line) => `<p>${escapeHtml(line) || "&nbsp;"}</p>`).join("\n") + bookCard;
     const htmlFooter = `<hr style="margin:24px 0;border:none;border-top:1px solid #ddd">
 <p style="font-size:13px;color:#666">— Sent by ${escapeHtml(senderName)} via <a href="https://bookgroup.hiko.co.nz">Puhoi Fireside Bookgroup</a>.<br>
 We are a small but vibrant group of readers in Puhoi, New Zealand.<br>
