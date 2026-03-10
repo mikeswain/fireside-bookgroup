@@ -791,6 +791,17 @@
     "year": 2026
   },
   {
+    "id": "d47fc537d0ef",
+    "title": "The Correspondent",
+    "author": "Virginia Evans",
+    "proposer": "Kathryn",
+    "isbn": "9780593798430",
+    "coverUrl": "https://covers.openlibrary.org/b/id/15097207-M.jpg",
+    "meetingDate": "2026-05-20T07:30:00.000Z",
+    "month": 5,
+    "year": 2026
+  },
+  {
     "id": "193e9c54679e",
     "proposer": "Mike S",
     "title": "Hamnet",
