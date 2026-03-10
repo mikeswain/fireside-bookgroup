@@ -803,14 +803,14 @@
   },
   {
     "id": "193e9c54679e",
-    "proposer": "Mike S",
     "title": "Hamnet",
     "author": "Maggie O'Farrell",
+    "proposer": "Jenny",
     "isbn": "9781432892494",
-    "meetingDate": "2026-07-21T07:00:00.000Z",
+    "coverUrl": "https://covers.openlibrary.org/b/id/10306590-M.jpg",
+    "meetingDate": "2026-07-22T07:30:00.000Z",
     "month": 7,
-    "year": 2026,
-    "coverUrl": "https://covers.openlibrary.org/b/id/10306590-M.jpg"
+    "year": 2026
   },
   {
     "id": "8163e36bf98d",
