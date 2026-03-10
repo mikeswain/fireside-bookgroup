@@ -791,6 +791,17 @@
     "year": 2026
   },
   {
+    "id": "64914551f591",
+    "title": "Brave New World",
+    "author": "Aldous Huxley",
+    "proposer": "Mike Swain",
+    "isbn": "9781539057000",
+    "coverUrl": "https://covers.openlibrary.org/b/id/8231823-M.jpg",
+    "meetingDate": "2026-05-20T07:30:00.000Z",
+    "month": 5,
+    "year": 2026
+  },
+  {
     "id": "d47fc537d0ef",
     "title": "The Correspondent",
     "author": "Virginia Evans",
