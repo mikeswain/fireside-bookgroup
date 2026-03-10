@@ -73,7 +73,7 @@
     "givenName": "Jenny",
     "familyName": "",
     "email": "jenny@hiko.co.nz",
-    "isAdmin": false,
+    "isAdmin": true,
     "notifiable": true
   },
   {
