@@ -19,6 +19,9 @@ Single-page Next.js app displaying a calendar of book group meetings. Data is so
 - `src/app/page.tsx` — public page, server component
 - `src/app/admin/page.tsx` — admin page (protected by Cloudflare Access)
 - `src/app/api/books/route.ts` — CRUD API: GET, POST, PUT, DELETE
+- `src/components/MessageForm.tsx` — email compose form (client component)
+- `src/app/api/send-message/route.ts` — sends email via Resend API (text + HTML with book card)
+- `src/app/api/message-data/route.ts` — provides sender, recipients, and next book for message form
 - `scripts/sync-sheet.ts` — fetches Google Sheet CSV, looks up covers/ISBNs from Open Library (with Google Books fallback), writes `books.json`
 - `scripts/update.sh` — pull, sync, commit, push if changed
 
@@ -48,6 +51,14 @@ Single-page Next.js app displaying a calendar of book group meetings. Data is so
 3. Optionally set `GITHUB_BRANCH` (defaults to `main`)
 4. In Cloudflare Zero Trust dashboard, create a self-hosted application protecting `/admin` and `/api/books` paths
 5. Add an Allow policy for member email addresses
+
+## Messaging
+- **URL**: `/admin` (same page as admin, uses `MessageForm` component)
+- **API**: `/api/send-message` — POST (protected by Cloudflare Access)
+- **Email provider**: Resend (`RESEND_API_KEY` env var, `EMAIL_FROM` for sender address)
+- **Flow**: Compose form → validates recipients against `data/members.json` → sends via Resend API
+- **HTML emails**: all emails include both plain text and HTML; HTML version always includes a styled "This month's book" card (fetched server-side from `data/books.json`)
+- **Prefill**: "Prefill as Book Reminder" button populates subject/body from next upcoming book
 
 ## Notes
 - Cover images are validated for size (>1KB) to reject Open Library placeholders
