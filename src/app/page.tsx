@@ -41,7 +41,6 @@ function AboutContent() {
 }
 
 export default function Home() {
-  const now = new Date();
   const books = getBooks();
   const lastUpdated = statSync(
     join(process.cwd(), "data", "books.json"),
@@ -52,24 +51,6 @@ export default function Home() {
     hour: "2-digit",
     minute: "2-digit",
   });
-
-  const dated = books.filter((b) => b.meetingDate);
-  const undated = books.filter((b) => !b.meetingDate);
-
-  const upcoming = dated
-    .filter((b) => new Date(b.meetingDate!) >= now)
-    .sort(
-      (a, b) =>
-        new Date(a.meetingDate!).getTime() - new Date(b.meetingDate!).getTime(),
-    )
-    .slice(0, 6);
-
-  const past = dated
-    .filter((b) => new Date(b.meetingDate!) < now)
-    .sort(
-      (a, b) =>
-        new Date(b.meetingDate!).getTime() - new Date(a.meetingDate!).getTime(),
-    );
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-12">
@@ -114,7 +95,7 @@ export default function Home() {
           <AboutContent />
         </div>
       </section>
-      <BookList upcoming={upcoming} past={past} undated={undated} />
+      <BookList books={books} />
     </main>
   );
 }

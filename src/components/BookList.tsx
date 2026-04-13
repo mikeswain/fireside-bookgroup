@@ -150,14 +150,23 @@ function BookCard({ book, query }: { book: Book; query: string; }) {
   );
 }
 
-interface BookListProps {
-  upcoming: Book[];
-  past: Book[];
-  undated: Book[];
-}
-
-export default function BookList({ upcoming, past, undated }: BookListProps) {
+export default function BookList({ books }: { books: Book[] }) {
   const [query, setQuery] = useState("");
+
+  const { upcoming, past, undated } = useMemo(() => {
+    const now = new Date();
+    const dated = books.filter((b) => b.meetingDate);
+    return {
+      upcoming: dated
+        .filter((b) => new Date(b.meetingDate!) >= now)
+        .sort((a, b) => new Date(a.meetingDate!).getTime() - new Date(b.meetingDate!).getTime())
+        .slice(0, 6),
+      past: dated
+        .filter((b) => new Date(b.meetingDate!) < now)
+        .sort((a, b) => new Date(b.meetingDate!).getTime() - new Date(a.meetingDate!).getTime()),
+      undated: books.filter((b) => !b.meetingDate),
+    };
+  }, [books]);
 
   const filteredUpcoming = useMemo(
     () => (query ? upcoming.filter((b) => bookMatchesQuery(b, query)) : upcoming),
