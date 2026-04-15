@@ -1,5 +1,5 @@
 /**
- * Returns the first Tuesday of the given month/year at 19:00 as an ISO string.
+ * Returns the first Tuesday of the given month/year at 19:30 as an ISO string.
  * Month is 1-based (1 = January).
  */
 export function getFirstTuesday(month: number, year: number): string {
@@ -8,7 +8,7 @@ export function getFirstTuesday(month: number, year: number): string {
   // Tuesday = 2; calculate days to add
   const daysUntilTuesday = (2 - dayOfWeek + 7) % 7;
   date.setDate(1 + daysUntilTuesday);
-  date.setHours(19, 0, 0, 0);
+  date.setHours(19, 30, 0, 0);
   return date.toISOString();
 }
 
