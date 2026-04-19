@@ -824,21 +824,49 @@
     "year": 2026
   },
   {
-    "id": "98256d69551a",
-    "proposer": "Derek",
-    "meetingDate": "2026-08-19T07:30:00.000Z",
-    "month": 8,
-    "year": 2026
-  },
-  {
     "id": "e87d2d9e4dac",
     "title": "The Artist",
     "author": "Lucy Steeds",
     "proposer": "Derek",
     "coverUrl": "https://storage.googleapis.com/circlesoft/document/photos/004/331/124/homepage_temp_img.jpg20260101-58-gy17mh?1767309084",
+    "meetingDate": "2026-08-19T07:30:00.000Z",
+    "month": 8,
+    "year": 2026
+  },
+  {
+    "id": "991403cb1210",
+    "proposer": "Bryan",
+    "meetingDate": "2026-09-16T07:30:00.000Z",
+    "month": 9,
+    "year": 2026
+  },
+  {
+    "id": "98256d69551a",
+    "proposer": "Joe",
     "meetingDate": "2026-10-21T06:30:00.000Z",
     "month": 10,
     "year": 2026
+  },
+  {
+    "id": "38958ec8ca34",
+    "proposer": "Kate",
+    "meetingDate": "2026-11-18T06:30:00.000Z",
+    "month": 11,
+    "year": 2026
+  },
+  {
+    "id": "465d782ae5b7",
+    "proposer": "Diane",
+    "meetingDate": "2026-12-16T06:30:00.000Z",
+    "month": 12,
+    "year": 2026
+  },
+  {
+    "id": "cb0e357f84d9",
+    "proposer": "Jenny Lydon",
+    "meetingDate": "2027-01-20T06:30:00.000Z",
+    "month": 1,
+    "year": 2027
   },
   {
     "id": "8163e36bf98d",

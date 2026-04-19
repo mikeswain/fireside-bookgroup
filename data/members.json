@@ -77,6 +77,13 @@
     "notifiable": true
   },
   {
+    "givenName": "Jenny",
+    "familyName": "Lydon",
+    "email": "jmlydon@gmail.com",
+    "isAdmin": false,
+    "notifiable": true
+  },
+  {
     "givenName": "Joe",
     "familyName": "",
     "email": "j.a.grixti@gmail.com",
