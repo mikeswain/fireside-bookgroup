@@ -121,8 +121,8 @@
     "givenName": "Mike",
     "familyName": "Test",
     "email": "mike.r.swain@gmail.com",
-    "isAdmin": true,
-    "notifiable": false
+    "isAdmin": false,
+    "notifiable": true
   },
   {
     "givenName": "Steve",
