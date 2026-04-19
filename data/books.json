@@ -1291,5 +1291,13 @@
     "author": "C J Sansom",
     "isbn": "9781435290396",
     "coverUrl": "https://covers.openlibrary.org/b/id/400338-M.jpg"
+  },
+  {
+    "id": "352f4d36342c",
+    "title": "Daniel",
+    "author": "Henning Mankell",
+    "proposer": "Jenny",
+    "isbn": "9781595586322",
+    "coverUrl": "https://covers.openlibrary.org/b/id/12100861-M.jpg"
   }
 ]
