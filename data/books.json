@@ -797,7 +797,7 @@
     "proposer": "Mike Swain",
     "isbn": "9781539057000",
     "coverUrl": "https://covers.openlibrary.org/b/id/8231823-M.jpg",
-    "meetingDate": "2026-05-20T07:30:00.000Z",
+    "meetingDate": "2026-05-19T07:30:00.000Z",
     "month": 5,
     "year": 2026
   },
@@ -808,7 +808,7 @@
     "proposer": "Kathryn",
     "isbn": "9780593798430",
     "coverUrl": "https://covers.openlibrary.org/b/isbn/9780593798430-M.jpg",
-    "meetingDate": "2026-06-17T07:30:00.000Z",
+    "meetingDate": "2026-06-16T07:30:00.000Z",
     "month": 6,
     "year": 2026
   },
@@ -819,7 +819,7 @@
     "proposer": "Jenny",
     "isbn": "9781432892494",
     "coverUrl": "https://covers.openlibrary.org/b/id/10306590-M.jpg",
-    "meetingDate": "2026-07-22T07:30:00.000Z",
+    "meetingDate": "2026-07-21T07:30:00.000Z",
     "month": 7,
     "year": 2026
   },
@@ -829,42 +829,42 @@
     "author": "Lucy Steeds",
     "proposer": "Derek",
     "coverUrl": "https://storage.googleapis.com/circlesoft/document/photos/004/331/124/homepage_temp_img.jpg20260101-58-gy17mh?1767309084",
-    "meetingDate": "2026-08-19T07:30:00.000Z",
+    "meetingDate": "2026-08-18T07:30:00.000Z",
     "month": 8,
     "year": 2026
   },
   {
     "id": "991403cb1210",
     "proposer": "Bryan",
-    "meetingDate": "2026-09-16T07:30:00.000Z",
+    "meetingDate": "2026-09-15T07:30:00.000Z",
     "month": 9,
     "year": 2026
   },
   {
     "id": "98256d69551a",
     "proposer": "Joe",
-    "meetingDate": "2026-10-21T06:30:00.000Z",
+    "meetingDate": "2026-10-20T06:30:00.000Z",
     "month": 10,
     "year": 2026
   },
   {
     "id": "38958ec8ca34",
     "proposer": "Kate",
-    "meetingDate": "2026-11-18T06:30:00.000Z",
+    "meetingDate": "2026-11-17T06:30:00.000Z",
     "month": 11,
     "year": 2026
   },
   {
     "id": "465d782ae5b7",
     "proposer": "Diane",
-    "meetingDate": "2026-12-16T06:30:00.000Z",
+    "meetingDate": "2026-12-15T06:30:00.000Z",
     "month": 12,
     "year": 2026
   },
   {
     "id": "cb0e357f84d9",
     "proposer": "Jenny Lydon",
-    "meetingDate": "2027-01-20T06:30:00.000Z",
+    "meetingDate": "2027-01-19T06:30:00.000Z",
     "month": 1,
     "year": 2027
   },

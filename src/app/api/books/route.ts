@@ -19,6 +19,23 @@ function generateId(): string {
   return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+/**
+ * NZ UTC offset in hours on a given calendar day (12 = NZST, 13 = NZDT).
+ * Uses 00:00 UTC of the target day as a reference — that instant always falls at
+ * 12:00 (NZST) or 13:00 (NZDT) on the same NZ calendar day, safely inside the
+ * day and clear of DST transitions (which happen in the early hours).
+ */
+function nzOffsetHours(year: number, month: number, day: number): number {
+  const ref = new Date(Date.UTC(year, month - 1, day, 0, 0, 0));
+  return parseInt(
+    new Intl.DateTimeFormat("en-US", {
+      timeZone: "Pacific/Auckland",
+      hour: "2-digit",
+      hour12: false,
+    }).format(ref),
+  );
+}
+
 /** Calculate the third Tuesday of a given month/year, at MEETING_HOUR:MEETING_MINUTE Pacific/Auckland. */
 function thirdTuesday(year: number, month: number): string {
   const first = new Date(Date.UTC(year, month - 1, 1));
@@ -26,38 +43,16 @@ function thirdTuesday(year: number, month: number): string {
   const daysToTue = (2 - dayOfWeek + 7) % 7;
   const day = 1 + daysToTue + 14;
 
-  // Use Intl to get the real UTC offset for this date in NZ (handles DST correctly)
-  const ref = new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
-  const nzHour = parseInt(
-    new Intl.DateTimeFormat("en-US", {
-      timeZone: "Pacific/Auckland",
-      hour: "2-digit",
-      hour12: false,
-    }).format(ref),
-  );
-  const offsetHours = nzHour - 12; // 12 (NZST) or 13 (NZDT)
-
+  const offsetHours = nzOffsetHours(year, month, day);
   return new Date(Date.UTC(year, month - 1, day, MEETING_HOUR - offsetHours, MEETING_MINUTE, 0)).toISOString();
 }
 
 /** Convert a datetime-local value (NZ time) to an ISO string. */
 function nzToIso(datetimeLocal: string): string {
-  // datetimeLocal is "YYYY-MM-DDTHH:MM" in Pacific/Auckland
   const [datePart, timePart] = datetimeLocal.split("T");
   const [y, m, d] = datePart.split("-").map(Number);
   const [h, min] = timePart.split(":").map(Number);
-
-  // Get NZ offset for this date
-  const ref = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
-  const nzHour = parseInt(
-    new Intl.DateTimeFormat("en-US", {
-      timeZone: "Pacific/Auckland",
-      hour: "2-digit",
-      hour12: false,
-    }).format(ref),
-  );
-  const offsetHours = nzHour - 12;
-
+  const offsetHours = nzOffsetHours(y, m, d);
   return new Date(Date.UTC(y, m - 1, d, h - offsetHours, min, 0)).toISOString();
 }
 

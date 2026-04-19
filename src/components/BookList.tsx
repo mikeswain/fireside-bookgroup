@@ -24,10 +24,12 @@ function formatDate(meetingDate: string) {
     year: "numeric",
     month: "long",
     day: "numeric",
+    timeZone: "Pacific/Auckland",
   });
   const time = date.toLocaleTimeString("en-NZ", {
     hour: "2-digit",
     minute: "2-digit",
+    timeZone: "Pacific/Auckland",
   });
   return { formatted, time };
 }
