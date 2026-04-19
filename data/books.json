@@ -824,13 +824,6 @@
     "year": 2026
   },
   {
-    "id": "98256d69551a",
-    "proposer": "Derek",
-    "meetingDate": "2026-08-19T07:30:00.000Z",
-    "month": 8,
-    "year": 2026
-  },
-  {
     "id": "e87d2d9e4dac",
     "title": "The Artist",
     "author": "Lucy Steeds",
@@ -838,6 +831,13 @@
     "coverUrl": "https://storage.googleapis.com/circlesoft/document/photos/004/331/124/homepage_temp_img.jpg20260101-58-gy17mh?1767309084",
     "meetingDate": "2026-08-19T07:30:00.000Z",
     "month": 8,
+    "year": 2026
+  },
+  {
+    "id": "98256d69551a",
+    "proposer": "Joe",
+    "meetingDate": "2026-10-21T06:30:00.000Z",
+    "month": 10,
     "year": 2026
   },
   {
