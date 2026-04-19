@@ -4,7 +4,7 @@ export interface Book {
   meetingDate?: string;
   month?: number;
   year?: number;
-  title: string;
+  title?: string;
   author?: string;
   isbn?: string;
   coverUrl?: string;

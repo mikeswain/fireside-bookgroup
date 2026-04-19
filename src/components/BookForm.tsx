@@ -37,6 +37,7 @@ function toDatetimeLocal(iso: string): string {
 export default function BookForm({ book, members = [], onSave, onCancel }: BookFormProps) {
   const currentYear = new Date().getFullYear();
 
+  const [tbc, setTbc] = useState(book ? !book.title : false);
   const [title, setTitle] = useState(book?.title ?? "");
   const [author, setAuthor] = useState(book?.author ?? "");
   const [proposer, setProposer] = useState(book?.proposer ?? "");
@@ -52,7 +53,16 @@ export default function BookForm({ book, members = [], onSave, onCancel }: BookF
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim()) {
+    if (tbc) {
+      if (!proposer.trim()) {
+        setError("Proposer is required for a 'to be confirmed' slot");
+        return;
+      }
+      if (!month || !year) {
+        setError("Month and year are required for a 'to be confirmed' slot");
+        return;
+      }
+    } else if (!title.trim()) {
       setError("Title is required");
       return;
     }
@@ -60,7 +70,12 @@ export default function BookForm({ book, members = [], onSave, onCancel }: BookF
     setError("");
     try {
       await onSave({
-        title, author, proposer, month, year, isbn,
+        title: tbc ? "" : title,
+        author: tbc ? "" : author,
+        proposer,
+        month,
+        year,
+        isbn: tbc ? "" : isbn,
         customDate: useCustomDate && customDate ? customDate : undefined,
       });
     } catch (err) {
@@ -75,32 +90,49 @@ export default function BookForm({ book, members = [], onSave, onCancel }: BookF
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <label className="flex items-center gap-2 text-sm text-amber-800">
+        <input
+          type="checkbox"
+          checked={tbc}
+          onChange={(e) => setTbc(e.target.checked)}
+          disabled={saving}
+          className="rounded border-amber-300"
+        />
+        Book to be confirmed (reserve the slot without choosing a book yet)
+      </label>
+
+      {!tbc && (
+        <>
+          <div>
+            <label className={labelClass}>
+              Title <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className={inputClass}
+              disabled={saving}
+            />
+          </div>
+
+          <div>
+            <label className={labelClass}>Author</label>
+            <input
+              type="text"
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+              className={inputClass}
+              disabled={saving}
+            />
+          </div>
+        </>
+      )}
+
       <div>
         <label className={labelClass}>
-          Title <span className="text-red-500">*</span>
+          Proposer{tbc && <span className="text-red-500"> *</span>}
         </label>
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className={inputClass}
-          disabled={saving}
-        />
-      </div>
-
-      <div>
-        <label className={labelClass}>Author</label>
-        <input
-          type="text"
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-          className={inputClass}
-          disabled={saving}
-        />
-      </div>
-
-      <div>
-        <label className={labelClass}>Proposer</label>
         <select
           value={proposer}
           onChange={(e) => setProposer(e.target.value)}
@@ -172,17 +204,19 @@ export default function BookForm({ book, members = [], onSave, onCancel }: BookF
         )}
       </div>
 
-      <div>
-        <label className={labelClass}>ISBN</label>
-        <input
-          type="text"
-          value={isbn}
-          onChange={(e) => setIsbn(e.target.value)}
-          placeholder="Optional — looked up automatically"
-          className={inputClass}
-          disabled={saving}
-        />
-      </div>
+      {!tbc && (
+        <div>
+          <label className={labelClass}>ISBN</label>
+          <input
+            type="text"
+            value={isbn}
+            onChange={(e) => setIsbn(e.target.value)}
+            placeholder="Optional — looked up automatically"
+            className={inputClass}
+            disabled={saving}
+          />
+        </div>
+      )}
 
       {error && (
         <p className="text-sm text-red-600">{error}</p>
@@ -194,7 +228,7 @@ export default function BookForm({ book, members = [], onSave, onCancel }: BookF
           disabled={saving}
           className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white hover:bg-amber-700 disabled:opacity-50"
         >
-          {saving ? "Saving..." : book ? "Update Book" : "Add Book"}
+          {saving ? "Saving..." : book ? "Update" : tbc ? "Add Slot" : "Add Book"}
         </button>
         <button
           type="button"
@@ -208,7 +242,9 @@ export default function BookForm({ book, members = [], onSave, onCancel }: BookF
 
       {saving && (
         <p className="text-xs text-amber-600">
-          Looking up cover image and committing to GitHub&hellip; this may take a few seconds.
+          {tbc
+            ? "Committing to GitHub\u2026 this may take a few seconds."
+            : "Looking up cover image and committing to GitHub\u2026 this may take a few seconds."}
         </p>
       )}
     </form>

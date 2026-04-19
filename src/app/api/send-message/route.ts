@@ -32,13 +32,15 @@ interface SendPayload {
   recipientEmails: string[];
 }
 
-function bookSearchUrl(book: Book): string {
+type TitledBook = Book & { title: string };
+
+function bookSearchUrl(book: TitledBook): string {
   if (book.isbn) return `https://openlibrary.org/isbn/${book.isbn.replace(/[-\s]/g, "")}`;
   const q = book.author ? `${book.title} ${book.author}` : book.title;
   return `https://bookhub.co.nz/catalog/search?utf8=%E2%9C%93&keyword=${encodeURIComponent(q)}&search_type=core%5Ekeyword`;
 }
 
-function renderBookCardHtml(book: Book): string {
+function renderBookCardHtml(book: TitledBook): string {
   const url = bookSearchUrl(book);
   const date = book.meetingDate ? new Date(book.meetingDate) : null;
   const dateStr = date
@@ -98,7 +100,7 @@ export async function POST(request: NextRequest) {
     const { data: books } = await fetchJsonFile<Book[]>(getToken(), BOOKS_PATH);
     const now = new Date();
     const nextBook = books
-      .filter((b) => b.meetingDate && new Date(b.meetingDate) >= now)
+      .filter((b): b is TitledBook => !!b.title && !!b.meetingDate && new Date(b.meetingDate) >= now)
       .sort((a, b) => new Date(a.meetingDate!).getTime() - new Date(b.meetingDate!).getTime())[0] ?? null;
     const bookCard = nextBook ? renderBookCardHtml(nextBook) : "";
     const htmlBody = textBody.split("\n").map((line) => `<p>${escapeHtml(line) || "&nbsp;"}</p>`).join("\n") + bookCard;

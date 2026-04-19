@@ -86,11 +86,14 @@ interface BookPayload {
 /** Build the core Book fields from a form payload, plus cover lookup. */
 async function bookFromPayload(payload: BookPayload, id: string): Promise<Book> {
   const { title, author, proposer, isbn, month, year, customDate } = payload;
-  const coverResult = await findCover(title, author, isbn);
+  const trimmedTitle = title.trim();
+  const coverResult = trimmedTitle
+    ? await findCover(trimmedTitle, author, isbn)
+    : { coverUrl: undefined, isbn: undefined };
 
   const book: Book = {
     id,
-    title: title.trim(),
+    title: trimmedTitle || undefined,
     author: author.trim() || undefined,
     proposer: proposer.trim(),
     isbn: isbn.trim() || coverResult.isbn || undefined,
@@ -106,6 +109,17 @@ async function bookFromPayload(payload: BookPayload, id: string): Promise<Book> 
   return book;
 }
 
+/** Human label for a book, used in commit messages. Falls back to a month/year slot for TBC entries. */
+function bookLabel(book: Book): string {
+  if (book.title) return `"${book.title}"`;
+  if (book.month && book.year) {
+    const date = new Date(Date.UTC(book.year, book.month - 1, 1));
+    const monthName = date.toLocaleDateString("en-NZ", { month: "long", timeZone: "UTC" });
+    return `${monthName} ${book.year} slot${book.proposer ? ` (${book.proposer})` : ""}`;
+  }
+  return "untitled entry";
+}
+
 // --- POST: add a book ---
 export async function POST(request: NextRequest) {
   try {
@@ -114,8 +128,9 @@ export async function POST(request: NextRequest) {
 
     const { sha, ...payload } = (await request.json()) as BookPayload & { sha: string };
 
-    if (!payload.title?.trim()) {
-      return NextResponse.json({ error: "Title is required" }, { status: 400 });
+    const validationError = validatePayload(payload);
+    if (validationError) {
+      return NextResponse.json({ error: validationError }, { status: 400 });
     }
 
     const token = getToken();
@@ -132,7 +147,7 @@ export async function POST(request: NextRequest) {
     books.push(book);
     sortBooks(books);
 
-    await commitBooks(token, books, currentSha, `Add "${book.title}"`);
+    await commitBooks(token, books, currentSha, `Add ${bookLabel(book)}`);
     return NextResponse.json({ book }, { status: 201 });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
@@ -150,6 +165,11 @@ export async function PUT(request: NextRequest) {
 
     if (!id) {
       return NextResponse.json({ error: "ID is required" }, { status: 400 });
+    }
+
+    const validationError = validatePayload(payload);
+    if (validationError) {
+      return NextResponse.json({ error: validationError }, { status: 400 });
     }
 
     const token = getToken();
@@ -179,7 +199,7 @@ export async function PUT(request: NextRequest) {
     books[index] = updated;
     sortBooks(books);
 
-    await commitBooks(token, books, currentSha, `Update "${updated.title}"`);
+    await commitBooks(token, books, currentSha, `Update ${bookLabel(updated)}`);
     return NextResponse.json({ book: updated });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
@@ -215,12 +235,22 @@ export async function DELETE(request: NextRequest) {
     }
 
     const [removed] = books.splice(index, 1);
-    await commitBooks(token, books, currentSha, `Delete "${removed.title}"`);
+    await commitBooks(token, books, currentSha, `Delete ${bookLabel(removed)}`);
     return NextResponse.json({ deleted: removed.id });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     return NextResponse.json({ error: message }, { status: 500 });
   }
+}
+
+/**
+ * Validate a payload. A book needs either a title, or a proposer + month + year
+ * (a "to be confirmed" slot reserving a meeting date).
+ */
+function validatePayload(payload: BookPayload): string | null {
+  if (payload.title?.trim()) return null;
+  if (payload.proposer?.trim() && payload.month && payload.year) return null;
+  return "A book needs a title, or a proposer with month and year to hold the slot.";
 }
 
 /** Sort books: dated first (by date ascending), then undated at the end. */

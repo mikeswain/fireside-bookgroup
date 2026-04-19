@@ -27,14 +27,20 @@ export async function GET() {
       .filter((book): book is (Omit<Book, 'meetingDate'> & { meetingDate: string; }) => typeof book.meetingDate === "string")
       .map(book => [new Date(book.meetingDate), book] as const)
       .filter(([date, _]: readonly [Date, Book]) => date.getTime() > now)
-      .map(([date, book]) => ({
-        uid: book.id,
-        title: "Fireside Bookgroup",
-        stamp: { date },
-        start: { date },
-        end: { date: new Date(date.getTime() + 3 * 60 * 60 * 1000) },
-        summary: `Bookgroup: ${book.title} by ${book.author}, proposer ${abbreviateProposer(book.proposer, abbrevs)}`,
-      })),
+      .map(([date, book]) => {
+        const proposer = abbreviateProposer(book.proposer, abbrevs);
+        const summary = book.title
+          ? `Bookgroup: ${book.title}${book.author ? ` by ${book.author}` : ""}, proposer ${proposer}`
+          : `Bookgroup: book TBC, proposer ${proposer}`;
+        return {
+          uid: book.id,
+          title: "Fireside Bookgroup",
+          stamp: { date },
+          start: { date },
+          end: { date: new Date(date.getTime() + 3 * 60 * 60 * 1000) },
+          summary,
+        };
+      }),
   });
   return new Response(ics, {
     status: 200,

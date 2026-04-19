@@ -143,7 +143,7 @@ async function main() {
   for (let i = 0; i < books.length; i += BATCH_SIZE) {
     const batch = books.slice(i, i + BATCH_SIZE);
     const results = await Promise.all(
-      batch.map((book) => lookupBook(book.title, book.author, book.isbn)),
+      batch.map((book) => lookupBook(book.title ?? "", book.author, book.isbn)),
     );
     for (let j = 0; j < batch.length; j++) {
       const result = results[j];
@@ -168,7 +168,7 @@ async function main() {
     for (let i = 0; i < missing.length; i += BATCH_SIZE) {
       const batch = missing.slice(i, i + BATCH_SIZE);
       const results = await Promise.all(
-        batch.map((book) => googleBooksCover(book.title, book.author)),
+        batch.map((book) => googleBooksCover(book.title ?? "", book.author)),
       );
       for (let j = 0; j < batch.length; j++) {
         if (results[j]) {
@@ -190,7 +190,7 @@ async function main() {
     for (let i = 0; i < missingNz.length; i += BATCH_SIZE) {
       const batch = missingNz.slice(i, i + BATCH_SIZE);
       const results = await Promise.all(
-        batch.map((book) => bookhubCover(book.title, book.author)),
+        batch.map((book) => bookhubCover(book.title ?? "", book.author)),
       );
       for (let j = 0; j < batch.length; j++) {
         if (results[j]) {

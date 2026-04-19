@@ -3,7 +3,13 @@
 import { useState, useMemo, type ReactNode } from "react";
 import type { Book } from "@/lib/types";
 
-function bookSearchUrl(book: Book): string {
+type TitledBook = Book & { title: string };
+
+function isTitled(book: Book): book is TitledBook {
+  return !!book.title;
+}
+
+function bookSearchUrl(book: TitledBook): string {
   if (book.isbn) {
     return `https://openlibrary.org/isbn/${book.isbn.replace(/[-\s]/g, "")}`;
   }
@@ -42,12 +48,12 @@ function Highlight({ text, query }: { text: string; query: string; }): ReactNode
 
 function bookMatchesQuery(book: Book, query: string): boolean {
   const q = query.toLowerCase();
-  return [book.title, book.author, book.proposer, book.isbn]
+  return [book.title, book.author, book.proposer, book.isbn, book.title ? null : "to be confirmed"]
     .filter(Boolean)
     .some((field) => field!.toLowerCase().includes(q));
 }
 
-function FeaturedCard({ book, query }: { book: Book; query: string; }) {
+function FeaturedCard({ book, query }: { book: TitledBook; query: string; }) {
   const { formatted, time } = formatDate(book.meetingDate!);
 
   return (
@@ -99,7 +105,40 @@ function FeaturedCard({ book, query }: { book: Book; query: string; }) {
   );
 }
 
-function BookCard({ book, query }: { book: Book; query: string; }) {
+function TBCCard({ book, query }: { book: Book; query: string; }) {
+  const dateInfo = book.meetingDate ? formatDate(book.meetingDate) : null;
+
+  return (
+    <div className="flex gap-4 rounded-xl border-2 border-dashed border-amber-300/70 bg-amber-50/40 p-4 shadow-sm backdrop-blur-sm">
+      <div className="flex h-28 w-20 shrink-0 items-center justify-center rounded-lg border border-dashed border-amber-300/60 bg-amber-100/40 text-4xl font-light text-amber-400">
+        ?
+      </div>
+      <div>
+        <p className="text-xs font-semibold uppercase tracking-wider text-amber-600/80">
+          To be confirmed
+        </p>
+        <h3 className="mt-1 text-lg font-semibold italic text-amber-800/70">
+          Book not yet chosen
+        </h3>
+        {dateInfo && (
+          <p className="mt-2 text-sm text-amber-800/70">
+            {dateInfo.formatted} at {dateInfo.time}
+          </p>
+        )}
+        {book.proposer && (
+          <p className="mt-1 text-sm text-amber-800/70">
+            To be proposed by{" "}
+            <span className="font-medium text-amber-900">
+              <Highlight text={book.proposer} query={query} />
+            </span>
+          </p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function BookCard({ book, query }: { book: TitledBook; query: string; }) {
   const dateInfo = book.meetingDate ? formatDate(book.meetingDate) : null;
 
   return (
@@ -164,9 +203,14 @@ export default function BookList({ books }: { books: Book[] }) {
       past: dated
         .filter((b) => new Date(b.meetingDate!) < now)
         .sort((a, b) => new Date(b.meetingDate!).getTime() - new Date(a.meetingDate!).getTime()),
-      undated: books.filter((b) => !b.meetingDate),
+      undated: books.filter((b) => !b.meetingDate && b.title),
     };
   }, [books]);
+
+  const renderCard = (q: string) => (b: Book) =>
+    isTitled(b)
+      ? <BookCard key={b.id} book={b} query={q} />
+      : <TBCCard key={b.id} book={b} query={q} />;
 
   const filteredUpcoming = useMemo(
     () => (query ? upcoming.filter((b) => bookMatchesQuery(b, query)) : upcoming),
@@ -234,11 +278,11 @@ export default function BookList({ books }: { books: Book[] }) {
           </p>
         ) : (
           <div className="space-y-4">
-            {!query && <FeaturedCard book={filteredUpcoming[0]} query={query} />}
+            {!query && isTitled(filteredUpcoming[0]) && (
+              <FeaturedCard book={filteredUpcoming[0]} query={query} />
+            )}
             <div className="grid gap-4 sm:grid-cols-2">
-              {filteredUpcoming.slice(query ? 0 : 1).map((b) => (
-                <BookCard key={b.id} book={b} query={query} />
-              ))}
+              {filteredUpcoming.slice(!query && filteredUpcoming[0].title ? 1 : 0).map(renderCard(query))}
             </div>
           </div>
         )}
@@ -254,9 +298,7 @@ export default function BookList({ books }: { books: Book[] }) {
               </span>
             </summary>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
-              {filteredPast.map((b) => (
-                <BookCard key={b.id} book={b} query={query} />
-              ))}
+              {filteredPast.map(renderCard(query))}
             </div>
           </details>
         )
@@ -272,9 +314,7 @@ export default function BookList({ books }: { books: Book[] }) {
               </span>
             </summary>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">
-              {filteredUndated.map((b) => (
-                <BookCard key={b.id} book={b} query={query} />
-              ))}
+              {filteredUndated.map(renderCard(query))}
             </div>
           </details>
         )

@@ -76,7 +76,10 @@ export default function AdminBookList() {
   };
 
   const handleDelete = async (book: Book) => {
-    if (!confirm(`Delete "${book.title}"? This will commit the change to GitHub.`)) {
+    const label = book.title
+      ? `"${book.title}"`
+      : `the ${book.month && book.year ? `${new Date(book.year, book.month - 1).toLocaleString("en-NZ", { month: "long" })} ${book.year}` : "untitled"} slot`;
+    if (!confirm(`Delete ${label}? This will commit the change to GitHub.`)) {
       return;
     }
     setDeletingId(book.id);
@@ -120,7 +123,7 @@ export default function AdminBookList() {
       const dir = sortAsc ? 1 : -1;
       switch (sortField) {
         case "title":
-          return dir * a.title.localeCompare(b.title);
+          return dir * (a.title ?? "").localeCompare(b.title ?? "");
         case "author":
           return dir * (a.author ?? "").localeCompare(b.author ?? "");
         case "proposer":
@@ -256,7 +259,9 @@ function BookRow({ book, members, isEditing, isDeleting, onEdit, onCancelEdit, o
                 className="h-8 w-6 shrink-0 rounded object-cover"
               />
             )}
-            <span className="font-medium text-amber-900">{book.title}</span>
+            <span className={book.title ? "font-medium text-amber-900" : "italic text-amber-600"}>
+              {book.title ?? "— to be confirmed —"}
+            </span>
           </div>
         </td>
         <td className="px-3 py-2 text-sm text-amber-700">

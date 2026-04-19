@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     const now = new Date();
     const nextBook =
       books
-        .filter((b) => b.meetingDate && new Date(b.meetingDate) >= now)
+        .filter((b) => b.title && b.meetingDate && new Date(b.meetingDate) >= now)
         .sort((a, b) => new Date(a.meetingDate!).getTime() - new Date(b.meetingDate!).getTime())[0] ?? null;
 
     return NextResponse.json({ sender: result, recipients, nextBook });
