@@ -198,8 +198,7 @@ export default function BookList({ books }: { books: Book[] }) {
     return {
       upcoming: dated
         .filter((b) => new Date(b.meetingDate!) >= now)
-        .sort((a, b) => new Date(a.meetingDate!).getTime() - new Date(b.meetingDate!).getTime())
-        .slice(0, 6),
+        .sort((a, b) => new Date(a.meetingDate!).getTime() - new Date(b.meetingDate!).getTime()),
       past: dated
         .filter((b) => new Date(b.meetingDate!) < now)
         .sort((a, b) => new Date(b.meetingDate!).getTime() - new Date(a.meetingDate!).getTime()),
