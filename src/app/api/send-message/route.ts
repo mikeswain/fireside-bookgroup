@@ -95,6 +95,7 @@ export async function POST(request: NextRequest) {
 
     const senderName = displayName(sender);
     const textBody = body.trim();
+    const textHeader = `Puhoi Fireside Bookgroup\nhttps://bookgroup.hiko.co.nz\n\n`;
     const textFooter = `\n\n— Sent by ${senderName} via Puhoi Fireside Bookgroup.\nWe are a small but vibrant group of readers in Puhoi, New Zealand, website https://bookgroup.hiko.co.nz.\nIf you don't want to be contacted, think this has been sent in error, or maliciously, please email the webmaster mike@hiko.co.nz`;
 
     const { data: books } = await fetchJsonFile<Book[]>(getToken(), BOOKS_PATH);
@@ -103,6 +104,10 @@ export async function POST(request: NextRequest) {
       .filter((b): b is TitledBook => !!b.title && !!b.meetingDate && new Date(b.meetingDate) >= now)
       .sort((a, b) => new Date(a.meetingDate!).getTime() - new Date(b.meetingDate!).getTime())[0] ?? null;
     const bookCard = nextBook ? renderBookCardHtml(nextBook) : "";
+    const htmlHeader = `<div style="margin:0 0 20px;padding:20px 24px;background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:12px;border:1px solid #f59e0b;font-family:system-ui,sans-serif;text-align:center">
+<h1 style="margin:0;font-size:24px;font-weight:700;color:#78350f;letter-spacing:0.02em">Puhoi Fireside Bookgroup</h1>
+<p style="margin:6px 0 0;font-size:15px"><a href="https://bookgroup.hiko.co.nz" style="color:#b45309;text-decoration:underline;font-weight:500">bookgroup.hiko.co.nz</a></p>
+</div>`;
     const htmlBody = textBody.split("\n").map((line) => `<p>${escapeHtml(line) || "&nbsp;"}</p>`).join("\n") + bookCard;
     const htmlFooter = `<hr style="margin:24px 0;border:none;border-top:1px solid #ddd">
 <p style="font-size:13px;color:#666">— Sent by ${escapeHtml(senderName)} via <a href="https://bookgroup.hiko.co.nz">Puhoi Fireside Bookgroup</a>.<br>
@@ -120,8 +125,8 @@ If you don't want to be contacted, think this has been sent in error, or malicio
         to: recipientEmails,
         reply_to: sender.email,
         subject: subject.trim(),
-        text: textBody + textFooter,
-        html: htmlBody + htmlFooter,
+        text: textHeader + textBody + textFooter,
+        html: htmlHeader + htmlBody + htmlFooter,
       }),
     });
 
