@@ -41,7 +41,8 @@
     "givenName": "Derek",
     "familyName": "",
     "email": "derek@estamore.co.nz",
-    "notifiable": false
+    "isAdmin": false,
+    "notifiable": true
   },
   {
     "givenName": "Diane",
