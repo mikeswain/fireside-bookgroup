@@ -3,7 +3,7 @@
 import { useState, useMemo, type ReactNode } from "react";
 import type { Book } from "@/lib/types";
 
-type TitledBook = Book & { title: string };
+type TitledBook = Book & { title: string; };
 
 function isTitled(book: Book): book is TitledBook {
   return !!book.title;
@@ -47,6 +47,23 @@ function Highlight({ text, query }: { text: string; query: string; }): ReactNode
     ),
   );
 }
+function DateBadge({ book }: { book: Book; }): ReactNode {
+  const meetingDate = book?.meetingDate && new Date(book.meetingDate);
+  const today = new Date();
+  if (!!meetingDate && meetingDate.getTime() > today.getTime()) {
+    const formatted = meetingDate.toLocaleDateString("en-NZ", {
+      year: meetingDate.getFullYear() > today.getFullYear() ? "numeric" : undefined,
+      month: "long",
+    });
+    return <span className="rounded-full bg-amber-700/80 text-amber-100 text-sm p-2 h-fit font-bold text-nowrap">
+      {formatted}
+    </span>;
+  }
+  else
+    return undefined;
+
+
+}
 
 function bookMatchesQuery(book: Book, query: string): boolean {
   const q = query.toLowerCase();
@@ -60,9 +77,12 @@ function FeaturedCard({ book, query }: { book: TitledBook; query: string; }) {
 
   return (
     <div className="rounded-xl border-2 border-amber-400/60 bg-amber-50 p-5 shadow-md">
-      <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-amber-600">
-        This month&apos;s book
-      </p>
+      <div className="flex justify-between">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-amber-600">
+          This month&apos;s book
+        </p>
+        <DateBadge book={book} />
+      </div>
       <div className="flex gap-5">
         {book.coverUrl && (
           <img
@@ -103,6 +123,7 @@ function FeaturedCard({ book, query }: { book: TitledBook; query: string; }) {
           )}
         </div>
       </div>
+
     </div>
   );
 }
@@ -111,7 +132,7 @@ function TBCCard({ book, query }: { book: Book; query: string; }) {
   const dateInfo = book.meetingDate ? formatDate(book.meetingDate) : null;
 
   return (
-    <div className="flex gap-4 rounded-xl border-2 border-dashed border-amber-300/70 bg-amber-50/40 p-4 shadow-sm backdrop-blur-sm">
+    <div className="flex gap-4 rounded-xl border-2 border-dashed border-amber-300/70 bg-amber-50/40 p-4 shadow-sm backdrop-blur-sm justify-around">
       <div className="flex h-28 w-20 shrink-0 items-center justify-center rounded-lg border border-dashed border-amber-300/60 bg-amber-100/40 text-4xl font-light text-amber-400">
         ?
       </div>
@@ -136,6 +157,7 @@ function TBCCard({ book, query }: { book: Book; query: string; }) {
           </p>
         )}
       </div>
+      <DateBadge book={book} />
     </div>
   );
 }
@@ -144,7 +166,7 @@ function BookCard({ book, query }: { book: TitledBook; query: string; }) {
   const dateInfo = book.meetingDate ? formatDate(book.meetingDate) : null;
 
   return (
-    <div className="flex gap-4 rounded-xl border border-amber-200/60 bg-amber-50/80 p-4 shadow-sm backdrop-blur-sm transition-shadow hover:shadow-md">
+    <div className="flex gap-4 rounded-xl border border-amber-200/60 bg-amber-50/80 p-4 shadow-sm backdrop-blur-sm transition-shadow hover:shadow-md justify-around">
       {book.coverUrl && (
         <img
           src={book.coverUrl}
@@ -187,11 +209,12 @@ function BookCard({ book, query }: { book: TitledBook; query: string; }) {
           </p>
         )}
       </div>
+      <DateBadge book={book} />
     </div>
   );
 }
 
-export default function BookList({ books }: { books: Book[] }) {
+export default function BookList({ books }: { books: Book[]; }) {
   const [query, setQuery] = useState("");
 
   const { upcoming, past, undated } = useMemo(() => {
